@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overlapping Overset Grids &mdash; Nek5000  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="RANS Channel" href="rans.html" />
+    <link rel="prev" title="Conjugate Heat Transfer" href="conjht.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Nek5000
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem_setup.html">Problem Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fdlf.html">Fully Developed Laminar Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perhill.html">Periodic Hill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjht.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Overlapping Overset Grids</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pre-processing">Pre-processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-generation">Mesh generation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usr-file">usr file</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#modify-mesh-and-add-forcing-to-the-flow">Modify mesh and add forcing to the flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#specify-neknek-parameters">Specify NekNek parameters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#boundary-and-initial-conditions">Boundary and initial conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#control-parameters">Control parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#size-file">SIZE file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilation">Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-case">Running the case</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#post-processing-the-results">Post-processing the results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rans.html">RANS Channel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_rans.html">Multi-Component RANS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix.html">Appendices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nek5000</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+      <li>Overlapping Overset Grids</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/neknek.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overlapping-overset-grids">
+<span id="neknek"></span><h1>Overlapping Overset Grids<a class="headerlink" href="#overlapping-overset-grids" title="Permalink to this heading"></a></h1>
+<p>This tutorial will describe how to run a case with two overlapping meshes (NekNek) from scratch.
+We illustrate this by using the <a class="reference internal" href="perhill.html#perhill"><span class="std std-ref">Periodic Hill</span></a> case.
+If you are not familiar with <em>Nek5000</em>, we strongly recommend you begin with the periodic hill tutorial first!</p>
+<p>The three key steps to running a case with NekNek are:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Setting up the mesh with appropriate boundary conditions for the overlapping interface.</p></li>
+<li><p>Specifying parameters to control stability and accuracy for the overlapping-Schwarz iterations.</p></li>
+<li><p>Modifying <code class="docutils literal notranslate"><span class="pre">userbc</span></code> to read Dirichlet boundary data for the overlapping interfaces.</p></li>
+</ol>
+</div></blockquote>
+<section id="pre-processing">
+<h2>Pre-processing<a class="headerlink" href="#pre-processing" title="Permalink to this heading"></a></h2>
+<p>The pre-processing steps for a NekNek calculation differ from a mono-domain Nek5000 calculation only in terms of ensuring that the appropriate boundary condition <code class="docutils literal notranslate"><span class="pre">int</span></code> is specified at the overlapping interface.
+This boundary condition serves as the flag to let the solver know that Dirichlet data for these boundary conditions must come from interpolation of the data in the overlapping mesh.</p>
+</section>
+<section id="mesh-generation">
+<h2>Mesh generation<a class="headerlink" href="#mesh-generation" title="Permalink to this heading"></a></h2>
+<p>In this tutorial, we generate two meshes to span the entire domain, an upper and a lower mesh.
+The lower mesh is generated by <code class="docutils literal notranslate"><span class="pre">genbox</span></code> with the following input file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mi">2</span>                     <span class="n">spatial</span> <span class="n">dimension</span> <span class="p">(</span><span class="n">will</span> <span class="n">create</span> <span class="n">box</span><span class="o">.</span><span class="n">re2</span><span class="p">)</span>
+<span class="mi">1</span>                      <span class="n">number</span> <span class="n">of</span> <span class="n">fields</span>
+<span class="c1">#</span>
+<span class="c1">#    comments: two dimensional periodic hill</span>
+<span class="c1">#</span>
+<span class="c1">#========================================================</span>
+<span class="c1">#</span>
+<span class="n">Box</span>
+<span class="o">-</span><span class="mi">22</span> <span class="mi">5</span>                                     <span class="n">Nelx</span>  <span class="n">Nely</span>
+<span class="mf">0.0</span> <span class="mf">9.0</span> <span class="mf">1.</span>                                <span class="n">x0</span> <span class="n">x1</span> <span class="n">ratio</span>
+<span class="mf">0.0</span> <span class="mf">0.1</span> <span class="mf">0.25</span> <span class="mf">0.5</span> <span class="mf">1.5</span> <span class="mf">2.5</span>                  <span class="n">y0</span> <span class="n">y1</span> <span class="n">ratio</span>
+<span class="n">P</span>  <span class="p">,</span><span class="n">P</span>  <span class="p">,</span><span class="n">W</span>  <span class="p">,</span><span class="nb">int</span>                           <span class="n">BC</span><span class="s1">&#39;s:  (cbx0, cbx1, cby0, cby1)</span>
+</pre></div>
+</div>
+<p>and the upper mesh is generated by <code class="docutils literal notranslate"><span class="pre">genbox</span></code> with the following input file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span><span class="mi">2</span> <span class="n">spatial</span> <span class="n">dimension</span> <span class="p">(</span><span class="n">will</span> <span class="n">create</span> <span class="n">box</span><span class="o">.</span><span class="n">re2</span><span class="p">)</span>
+<span class="mi">1</span>                      <span class="n">number</span> <span class="n">of</span> <span class="n">fields</span>
+<span class="c1">#</span>
+<span class="c1">#    comments: two dimensional periodic hill</span>
+<span class="c1">#</span>
+<span class="c1">#========================================================</span>
+<span class="c1">#</span>
+<span class="n">Box</span>                                       
+<span class="o">-</span><span class="mi">21</span> <span class="mi">3</span>                 <span class="n">Nelx</span>  <span class="n">Nely</span>
+<span class="mf">0.0</span> <span class="mf">9.0</span> <span class="mf">1.</span>            <span class="n">x0</span> <span class="n">x1</span> <span class="n">ratio</span>
+<span class="mf">2.25</span> <span class="mf">2.75</span> <span class="mf">2.9</span> <span class="mf">3.0</span>     <span class="n">y0</span> <span class="n">y1</span> <span class="n">ratio</span>
+<span class="n">P</span>  <span class="p">,</span><span class="n">P</span>  <span class="p">,</span><span class="nb">int</span><span class="p">,</span><span class="n">W</span>         <span class="n">BC</span><span class="s1">&#39;s:  (cbx0, cbx1, cby0, cby1)</span>
+</pre></div>
+</div>
+<p>Note: the lower domain spans <span class="math notranslate nohighlight">\(y \in [0,2.5]\)</span> and the upper domain spans <span class="math notranslate nohighlight">\(y \in [2.25,3]\)</span>. We also use <code class="docutils literal notranslate"><span class="pre">int</span></code> for the boundary surfaces that overlap the other domain.</p>
+<p>Now the meshes can be generated by running <code class="docutils literal notranslate"><span class="pre">genbox</span></code> for each of these cases to obtain <code class="docutils literal notranslate"><span class="pre">upper.re2</span></code> and <code class="docutils literal notranslate"><span class="pre">lower.re2</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>genbox <span class="o">&lt;&lt;&lt;</span> upper.box
+<span class="gp">$ </span>mv box.re2 upper.re2
+<span class="gp">$ </span>genbox <span class="o">&lt;&lt;&lt;</span> lower.box
+<span class="gp">$ </span>mv box.re2 upper.re2
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Reminder</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">genbox</span></code> produces a file named <code class="docutils literal notranslate"><span class="pre">box.re2</span></code>, so you will need to rename the files between generating the separate parts.</p>
+</dd>
+</dl>
+<p>Once we have both upper and lower mesh files, we need to run <code class="docutils literal notranslate"><span class="pre">genmap</span></code> for both meshes.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>genmap
+</pre></div>
+</div>
+<p>On input specify <code class="docutils literal notranslate"><span class="pre">lower</span></code> as your casename and press enter to use the default tolerance.
+This step will produce <code class="docutils literal notranslate"><span class="pre">lower.ma2</span></code> which needs to be generated only once.
+Next do the same for the upper mesh to generate <code class="docutils literal notranslate"><span class="pre">upper.ma2</span></code>.</p>
+</section>
+<section id="usr-file">
+<h2>usr file<a class="headerlink" href="#usr-file" title="Permalink to this heading"></a></h2>
+<p>As for the mono-domain periodic hill case, we start by copying the template to our case directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp <span class="nv">$HOME</span>/Nek5000/core/zero.usr hillnn.usr
+</pre></div>
+</div>
+<section id="modify-mesh-and-add-forcing-to-the-flow">
+<h3>Modify mesh and add forcing to the flow<a class="headerlink" href="#modify-mesh-and-add-forcing-to-the-flow" title="Permalink to this heading"></a></h3>
+<p>As for the mono-domain periodic hill case, we modify the mesh in <code class="docutils literal notranslate"><span class="pre">usrdat2</span></code> as:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">usrdat2</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ntot</span><span class="p">,</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="kt">real </span><span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">xx</span><span class="p">,</span><span class="n">yy</span><span class="p">,</span><span class="n">argx</span><span class="p">,</span><span class="n">A1</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">ntot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lx1</span><span class="o">*</span><span class="n">ly1</span><span class="o">*</span><span class="n">lz1</span><span class="o">*</span><span class="n">nelt</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">A</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">4.5</span><span class="w"></span>
+<span class="w">      </span><span class="n">B</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">3.5</span><span class="w"></span>
+<span class="w">      </span><span class="n">C</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1.</span><span class="o">/</span><span class="mf">6.</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">do </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">ntot</span><span class="w"></span>
+<span class="w">         </span><span class="n">xx</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">xm1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">yy</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">ym1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">argx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="o">*</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">xx</span><span class="o">-</span><span class="n">A</span><span class="p">)</span><span class="o">-</span><span class="n">B</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">A1</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">C</span><span class="o">*</span><span class="nb">tanh</span><span class="p">(</span><span class="n">argx</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">ym1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="n">yy</span><span class="p">)</span><span class="o">*</span><span class="n">A1</span><span class="w"></span>
+<span class="w">      </span><span class="k">enddo</span>
+<span class="k">      </span>
+<span class="k">      return</span>
+<span class="k">      end</span><span class="w"></span>
+</pre></div>
+</div>
+<figure class="align-center" id="id1">
+<span id="fig-hillnn-mesh"></span><img alt="neknek_mesh" src="../_images/hillnn_mesh.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 17 </span><span class="caption-text">Modified box mesh graded</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Currently, applying a constant mass flux with <code class="docutils literal notranslate"><span class="pre">param(54)</span></code> and <code class="docutils literal notranslate"><span class="pre">param(55)</span></code> is <strong>not</strong> supported with overlapping overset grids.
+For this case, we drive the flow using a constant acceleration term in <code class="docutils literal notranslate"><span class="pre">userf</span></code> as:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">userf</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span><span class="w"> </span><span class="c">! set acceleration term</span>
+<span class="n">c</span><span class="w"></span>
+<span class="n">c</span><span class="w">     </span><span class="n">Note</span><span class="p">:</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is </span><span class="n">an</span><span class="w"> </span><span class="n">acceleration</span><span class="w"> </span><span class="n">term</span><span class="p">,</span><span class="w"> </span><span class="nb">NOT </span><span class="n">a</span><span class="w"> </span><span class="n">force</span><span class="c">!</span>
+<span class="n">c</span><span class="w">     </span><span class="n">Thus</span><span class="p">,</span><span class="w"> </span><span class="n">ffx</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="n">subsequently</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">multiplied</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">rho</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">t</span><span class="p">).</span><span class="w"></span>
+<span class="n">c</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">eg</span><span class="p">,</span><span class="n">e</span><span class="w"></span>
+
+<span class="n">c</span><span class="w">     </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+
+<span class="hll"><span class="w">      </span><span class="n">ffx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.052</span><span class="w"></span>
+</span><span class="w">      </span><span class="n">ffy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">ffz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="specify-neknek-parameters">
+<h3>Specify NekNek parameters<a class="headerlink" href="#specify-neknek-parameters" title="Permalink to this heading"></a></h3>
+<p>In <code class="docutils literal notranslate"><span class="pre">usrdat</span></code>, we  specify the number of Schwarz-like iterations and extrapolation order for the boundary conditions of the overlapping interface.
+These parameters impact the stability and accuracy of the calculation.
+This is done as:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">usrdat</span><span class="p">()</span><span class="w">   </span><span class="c">! This routine to modify element vertices</span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+
+<span class="hll"><span class="w">      </span><span class="n">ngeom</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"></span>
+</span><span class="hll"><span class="w">      </span><span class="n">ninter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+</span>
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Here we do 4 sub-iterations, <code class="docutils literal notranslate"><span class="pre">ngeom=5</span></code>, at each time-step between the two meshes, and the temporal extrapolation order, <code class="docutils literal notranslate"><span class="pre">ninter</span></code>, is 2.</p>
+</section>
+<section id="boundary-and-initial-conditions">
+<h3>Boundary and initial conditions<a class="headerlink" href="#boundary-and-initial-conditions" title="Permalink to this heading"></a></h3>
+<p>The next step is to specify the initial conditions.
+This can be done in the subroutine <code class="docutils literal notranslate"><span class="pre">useric</span></code> as follows:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">useric</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ieg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ieg</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">ux</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uy</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uz</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Next we modify userbc to read the boundary conditions, interpolated from overlapping domains, as follows:</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">userbc</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span><span class="w"> </span><span class="c">! set up boundary conditions</span>
+<span class="n">c</span><span class="w"></span>
+<span class="n">c</span><span class="w">     </span><span class="n">NOTE</span><span class="w"> </span><span class="kd">::</span><span class="p">:</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="k">subroutine </span><span class="n">MAY</span><span class="w"> </span><span class="nb">NOT </span><span class="n">be</span><span class="w"> </span><span class="n">called</span><span class="w"> </span><span class="n">by</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">process</span><span class="w"></span>
+<span class="n">c</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKNEK&#39;</span><span class="w"></span>
+
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">eg</span><span class="p">,</span><span class="n">ie</span><span class="w"></span>
+
+<span class="n">c</span><span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">cbc</span><span class="p">(</span><span class="n">iside</span><span class="p">,</span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">),</span><span class="n">ifield</span><span class="p">).</span><span class="n">eq</span><span class="p">.</span><span class="s1">&#39;v01&#39;</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="n">ie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">imask</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">).</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">        </span><span class="n">ux</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">        </span><span class="n">uy</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">        </span><span class="n">uz</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">        </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="k">else</span>
+<span class="hll"><span class="k">        </span><span class="n">ux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">        </span><span class="n">uy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">        </span><span class="n">uz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</span><span class="hll"><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">nfld_neknek</span><span class="p">.</span><span class="n">gt</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">,</span><span class="n">ldim</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+</span><span class="w">      </span><span class="k">endif</span>
+
+<span class="k">      return</span>
+<span class="k">      end</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="control-parameters">
+<h2>Control parameters<a class="headerlink" href="#control-parameters" title="Permalink to this heading"></a></h2>
+<p>The control parameters for this case are the same as that for the mono-domain periodic hill case.
+Create two files called <code class="docutils literal notranslate"><span class="pre">lower.par</span></code> and <code class="docutils literal notranslate"><span class="pre">upper.par</span></code>, and type in each the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nek5000 parameter file</span>
+<span class="p">[</span><span class="n">GENERAL</span><span class="p">]</span>
+<span class="n">stopAt</span> <span class="o">=</span> <span class="n">endTime</span>
+<span class="n">endTime</span>  <span class="o">=</span> <span class="mi">200</span>
+
+<span class="n">variableDT</span> <span class="o">=</span> <span class="n">yes</span>
+<span class="n">targetCFL</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">timeStepper</span> <span class="o">=</span> <span class="n">bdf2</span>
+
+<span class="n">writeControl</span> <span class="o">=</span> <span class="n">runTime</span>
+<span class="n">writeInterval</span> <span class="o">=</span> <span class="mi">20</span>
+
+<span class="p">[</span><span class="n">PROBLEMTYPE</span><span class="p">]</span>
+<span class="n">equation</span> <span class="o">=</span> <span class="n">incompNS</span>
+
+<span class="p">[</span><span class="n">PRESSURE</span><span class="p">]</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-5</span>
+<span class="n">residualProj</span> <span class="o">=</span> <span class="n">yes</span>
+
+<span class="p">[</span><span class="n">VELOCITY</span><span class="p">]</span>
+<span class="n">residualTol</span> <span class="o">=</span> <span class="mf">1e-8</span>
+<span class="n">density</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">viscosity</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>
+</pre></div>
+</div>
+</section>
+<section id="size-file">
+<h2>SIZE file<a class="headerlink" href="#size-file" title="Permalink to this heading"></a></h2>
+<p>The static memory layout of Nek5000 requires the user to set some solver parameters through a so called <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file.
+Typically it’s a good idea to start from our template.
+Copy the <code class="docutils literal notranslate"><span class="pre">SIZE.template</span></code> file from the core directory and rename it <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> in the working directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cp <span class="nv">$HOME</span>/Nek5000/core/SIZE.template SIZE
+</pre></div>
+</div>
+<p>For NekNek, the parameter choices are not as straightforward as for a regular case.
+Because the two cases are being run from a single executable, the <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file must be able to accommodate both cases.
+This can be accomplished by “brute force” by picking <code class="docutils literal notranslate"><span class="pre">lelg</span></code> for the larger of the two cases, <code class="docutils literal notranslate"><span class="pre">lpmin</span></code> for the smaller of the two and leaving <code class="docutils literal notranslate"><span class="pre">lelt</span></code> alone.
+However, for many practical cases, the two domains may not be of similar size and we may run out of memory, resulting in truncation errors at compile time (see <a class="reference internal" href="../faq.html#sec-faq-relocation"><span class="std std-ref">here</span></a>).
+This can be overcome by setting <code class="docutils literal notranslate"><span class="pre">lelt</span></code> manually and preserving the ratio of number of elements, <span class="math notranslate nohighlight">\(E\)</span>, to the number of MPI-ranks, <span class="math notranslate nohighlight">\(L\)</span>.</p>
+<p>If we have <span class="math notranslate nohighlight">\(L_{tot}\)</span> MPI-ranks (CPU-cores) available, we might choose</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}L_{lower}&amp;=\mathrm{floor}\left[\frac{E_{lower}}{E_{lower}+E_{upper}} L_{tot}\right]\\
+L_{upper}&amp;=L_{tot}-L_{lower}\\
+\mathrm{lelt}&amp;=\mathrm{max}\left[\frac{E_{upper}}{L_{upper}},\frac{E_{lower}}{L_{lower}}\right]+3\end{split}\]</div>
+<p>We then pick the largest mesh size for <code class="docutils literal notranslate"><span class="pre">lelg</span></code>, and the smallest rank count for <code class="docutils literal notranslate"><span class="pre">lpmin</span></code></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathrm{lelg} &amp;= \mathrm{max}\left[E_{lower},E_{upper}\right]\\
+\mathrm{lpmin} &amp;= \mathrm{min}\left[L_{lower},L_{upper}\right]\end{split}\]</div>
+<p>Assuming we have 8 MPI-ranks available for this case, that gives <code class="docutils literal notranslate"><span class="pre">lelg=110</span></code>, <code class="docutils literal notranslate"><span class="pre">lpmin</span> <span class="pre">=</span> <span class="pre">3</span></code>, and <code class="docutils literal notranslate"><span class="pre">lelt=25</span></code>.
+Then, adjust the parameters in the BASIC section</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="c">! BASIC</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">ldim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="w">               </span><span class="c">! domain dimension (2 or 3)</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lx1</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span><span class="w">                </span><span class="c">! GLL points per element along each direction</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lxd</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span><span class="w">               </span><span class="c">! GL  points for over-integration (dealiasing) </span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lx2</span><span class="o">=</span><span class="n">lx1</span><span class="o">-</span><span class="mi">0</span><span class="p">)</span><span class="w">            </span><span class="c">! GLL points for pressure (lx1 or lx1-2)</span>
+<span class="w">                                     </span>
+<span class="hll"><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lelg</span><span class="o">=</span><span class="mi">110</span><span class="p">)</span><span class="w">             </span><span class="c">! max number of global elements</span>
+</span><span class="hll"><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lpmin</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="w">              </span><span class="c">! min number of MPI ranks </span>
+</span><span class="hll"><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lelt</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span><span class="w">              </span><span class="c">! max number of local elements per MPI rank</span>
+</span><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">ldimt</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">              </span><span class="c">! max auxiliary fields (temperature + scalars)</span>
+</pre></div>
+</div>
+<p>and in the OPTIONAL section, set the maximum number of sessions, <code class="docutils literal notranslate"><span class="pre">nsessmax</span></code> to 2</p>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="c">! OPTIONAL</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">ldimt_proj</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">         </span><span class="c">! max auxiliary fields residual projection</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lelr</span><span class="o">=</span><span class="n">lelt</span><span class="p">)</span><span class="w">            </span><span class="c">! max number of local elements per restart file</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lhis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">               </span><span class="c">! max history/monitoring points</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">maxobj</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">             </span><span class="c">! max number of objects</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lpert</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">              </span><span class="c">! max number of perturbations</span>
+<span class="hll"><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">nsessmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="w">           </span><span class="c">! max sessions to NEKNEK</span>
+</span><span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lxo</span><span class="o">=</span><span class="n">lx1</span><span class="p">)</span><span class="w">              </span><span class="c">! max GLL points on output (lxo&gt;=lx1)</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">mxprev</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span><span class="w">            </span><span class="c">! max dim of projection space</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lgmres</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span><span class="w">            </span><span class="c">! max dim Krylov space</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span><span class="w">             </span><span class="c">! max order in time</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lx1m</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">               </span><span class="c">! GLL points mesh solver</span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lfdm</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="w">               </span><span class="c">! unused </span>
+<span class="w">      </span><span class="k">parameter</span><span class="w"> </span><span class="p">(</span><span class="n">lelx</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">lely</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">lelz</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c">! global tensor mesh dimensions</span>
+</pre></div>
+</div>
+<p>For this tutorial we have set our polynomial order to be <span class="math notranslate nohighlight">\(N=7\)</span> - this is defined in the <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file above as <code class="docutils literal notranslate"><span class="pre">lx1=8</span></code> which indices that there are 8 points in each spatial dimension of every element.
+Additional details on the parameters in the <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file are given <a class="reference internal" href="../problem_setup/case_files.html#case-files-size"><span class="std std-ref">here</span></a>.</p>
+</section>
+<section id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this heading"></a></h2>
+<p>With the <code class="docutils literal notranslate"><span class="pre">hillnn.usr</span></code>, and <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> files created, you should now be all set to compile and run your case!
+As a final check, you should have the following files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/7ee883a048d080ee7f82d6ac9ebba415/hillnn.usr"><code class="xref download docutils literal notranslate"><span class="pre">hillnn.usr</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/cbe1c6493825def7a8a98e07957c7849/lower.par"><code class="xref download docutils literal notranslate"><span class="pre">lower.par</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/e5f44e82fd4c1aa71c56fbbcdcaa4845/lower.re2"><code class="xref download docutils literal notranslate"><span class="pre">lower.re2</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/21b50e382d1c36f814f6242549953ca9/lower.ma2"><code class="xref download docutils literal notranslate"><span class="pre">lower.ma2</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/74932f2179c1b8607232e2c82833db88/upper.par"><code class="xref download docutils literal notranslate"><span class="pre">upper.par</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/50c3ce799c148d1ee2ba6fdaf666cae6/upper.re2"><code class="xref download docutils literal notranslate"><span class="pre">upper.re2</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/251a8593816f10e95fe2b082ae2f1aa5/upper.ma2"><code class="xref download docutils literal notranslate"><span class="pre">upper.ma2</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/9082344d2bb94e74742a605edd135066/SIZE"><code class="xref download docutils literal notranslate"><span class="pre">SIZE</span></code></a></p></li>
+</ul>
+</div></blockquote>
+<p>If for some reason you encountered an insurmountable error and were unable to generate any of the required files, you may use the provided links to download them.
+After confirming that you have all eight, you are now ready to compile</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>makenek hillnn
+</pre></div>
+</div>
+<p>If all works properly, upon compilation the executable <code class="docutils literal notranslate"><span class="pre">nek5000</span></code> will be generated.</p>
+</section>
+<section id="running-the-case">
+<h2>Running the case<a class="headerlink" href="#running-the-case" title="Permalink to this heading"></a></h2>
+<p>Now you are all set, just run</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>neknekb lower upper <span class="m">5</span> <span class="m">3</span>
+</pre></div>
+</div>
+<p>to launch an MPI job on your local machine using 8 ranks.</p>
+</section>
+<section id="post-processing-the-results">
+<h2>Post-processing the results<a class="headerlink" href="#post-processing-the-results" title="Permalink to this heading"></a></h2>
+<p>As the case runs, it will produce restart files for both sessions, upper and lower, independently.
+You will need to use <code class="docutils literal notranslate"><span class="pre">visnek</span></code> for both sessions to generate two metadata files.
+They can be visualized separately or together by loading both sets into ParaView or VisIt to post-process the results</p>
+<figure class="align-center" id="id2">
+<span id="fig-hillnn-flow"></span><img alt="hillnn_flow" src="../_images/hillnn_result.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 18 </span><span class="caption-text">Steady-State flow field visualized in Visit/Paraview. Vectors represent velocity. Colors represent velocity magnitude. Note, velocity vectors are equal size and not scaled by magnitude.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="conjht.html" class="btn btn-neutral float-left" title="Conjugate Heat Transfer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rans.html" class="btn btn-neutral float-right" title="RANS Channel" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2022, UCHICAGO ARGONNE, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

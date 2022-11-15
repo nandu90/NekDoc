@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RANS Channel &mdash; Nek5000  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Multi-Component RANS" href="multi_rans.html" />
+    <link rel="prev" title="Overlapping Overset Grids" href="neknek.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Nek5000
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../problem_setup.html">Problem Setup</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorials.html">Tutorials</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="fdlf.html">Fully Developed Laminar Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perhill.html">Periodic Hill</a></li>
+<li class="toctree-l2"><a class="reference internal" href="conjht.html">Conjugate Heat Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="neknek.html">Overlapping Overset Grids</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RANS Channel</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#before-you-begin">Before You Begin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mesh-and-boundary-conditions">Mesh and Boundary Conditions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#control-parameters-par-file">Control Parameters (.par file)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#user-routines-usr-file">User Routines (.usr file)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#size-file">SIZE file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilation">Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#results">Results</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_rans.html">Multi-Component RANS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../build.html">Build Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix.html">Appendices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Nek5000</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../tutorials.html">Tutorials</a> &raquo;</li>
+      <li>RANS Channel</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/rans.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rans-channel">
+<span id="rans"></span><h1>RANS Channel<a class="headerlink" href="#rans-channel" title="Permalink to this heading"></a></h1>
+<p>This tutorial describes the essential setup details for RANS wall-resolved simulation, illustrated through
+a 2D channel case. The <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS model is employed for this tutorial, which is the recommended RANS
+model in Nek5000. Other RANS models, including the regularized <span class="math notranslate nohighlight">\(k-\omega\)</span>, are also available, listed
+<a class="reference internal" href="../theory.html#intro-ktau"><span class="std std-ref">here</span></a>.</p>
+<section id="before-you-begin">
+<h2>Before You Begin<a class="headerlink" href="#before-you-begin" title="Permalink to this heading"></a></h2>
+<p>It is highly recommended that new users familiarize themselves with the basic Nek5000 simulation
+setup files and procedures outlined in the <a class="reference internal" href="fdlf.html#fdlf"><span class="std std-ref">Fully Developed Laminar Flow</span></a> and <a class="reference internal" href="perhill.html#perhill"><span class="std std-ref">Periodic Hill</span></a> tutorials before proceeding.</p>
+</section>
+<section id="mesh-and-boundary-conditions">
+<h2>Mesh and Boundary Conditions<a class="headerlink" href="#mesh-and-boundary-conditions" title="Permalink to this heading"></a></h2>
+<p>The mesh is generated with <code class="docutils literal notranslate"><span class="pre">genbox</span></code> using the following script</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-2                    spatial dimension
+4                     number of fields (U T TKE Omg)
+#=======================================================================
+#
+#    Example of .box file for channel flow
+#    Note that the character bcs _must_ have 3 spaces.
+#
+#=======================================================================
+#
+Box
+-3  -7                                nelx,nely,nelz for Box
+-0.5 0.5 1.0                             x0,x1,gain
+0.0 1.0 0.35
+P  ,P  ,SYM,W  
+P  ,P  ,SYM,I  
+P  ,P  ,SYM,t  
+P  ,P  ,SYM,t  
+</pre></div>
+</div>
+<p>It creates an infinite 2D half-channel of non-dimensional width <span class="math notranslate nohighlight">\(1\)</span>. The streamwise
+(<span class="math notranslate nohighlight">\(x\)</span>) direction has 3 elements with periodic boundary conditions, while the spanwise
+(<span class="math notranslate nohighlight">\(y\)</span>) direction has 7 elements with symmetry boundary condition specified at the bottom face
+and wall on the top face. In addition to velocity and temperature, RANS simulation
+requires two additional scalar fields including turbulent kinetic energy, <span class="math notranslate nohighlight">\(k\)</span>, and <span class="math notranslate nohighlight">\(\tau\)</span>
+stored at the 3rd and 4th field index respectively. Note that the 1st and 2nd index are reserved for
+velocity and temperature, respectively. In wall-resolved simulations Dirichlet boundary conditions are
+specified at the wall, denoted by <code class="docutils literal notranslate"><span class="pre">W</span></code> for velocity and <code class="docutils literal notranslate"><span class="pre">t</span></code> for <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span>.</p>
+</section>
+<section id="control-parameters-par-file">
+<h2>Control Parameters (.par file)<a class="headerlink" href="#control-parameters-par-file" title="Permalink to this heading"></a></h2>
+<p>Details of the structure of parameter file can be found <a class="reference internal" href="../problem_setup/case_files.html#case-files-par"><span class="std std-ref">here</span></a>. For RANS simulations it
+is critical to include <code class="docutils literal notranslate"><span class="pre">[SCALAR01]</span></code> and <code class="docutils literal notranslate"><span class="pre">[SCALAR02]</span></code> cards which correspond to the <span class="math notranslate nohighlight">\(k\)</span> and
+<span class="math notranslate nohighlight">\(\tau\)</span> fields respectively. In addition, it is essential to also include the <code class="docutils literal notranslate"><span class="pre">[PROBLEMTYPE]</span></code> card
+and enable <code class="docutils literal notranslate"><span class="pre">variableProperties</span></code> and <code class="docutils literal notranslate"><span class="pre">stressFormulation</span></code>.</p>
+<p>For this particular tutorial, the simulation is <a class="reference internal" href="../theory.html#intro-ns-nondim"><span class="std std-ref">non-dimensionalized</span></a> and flow
+properties are <code class="docutils literal notranslate"><span class="pre">density=1.0</span></code> and <code class="docutils literal notranslate"><span class="pre">viscosity=-125000</span></code>, the latter being the Reynolds number of the flow.
+It is strongly recommended to run RANS simulations in non-dimensional form. <code class="docutils literal notranslate"><span class="pre">density</span></code> and <code class="docutils literal notranslate"><span class="pre">diffusivity</span></code>
+for <code class="docutils literal notranslate"><span class="pre">SCALAR01</span></code> and <code class="docutils literal notranslate"><span class="pre">SCALAR02</span></code> should be assigned identical values as <code class="docutils literal notranslate"><span class="pre">density</span></code> and <code class="docutils literal notranslate"><span class="pre">viscosity</span></code> for
+velocity field, respectively (Note: property values for scalars are internally replaced with <cite>velocity</cite>
+properties).  Temperature field is not solved in this tutorial, but can be turned on by removing
+<code class="docutils literal notranslate"><span class="pre">solver=none</span></code> entry under the <code class="docutils literal notranslate"><span class="pre">[TEMPERATURE]</span></code> card.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#
+# nek parameter file
+#
+[GENERAL]
+numSteps = 60000
+dt = 5.0e-3
+writeInterval = 20000
+
+[PROBLEMTYPE]
+variableProperties = yes
+stressFormulation = yes
+
+[PRESSURE]
+residualTol = 1.0e-5
+
+[VELOCITY]
+density = 1.0
+viscosity = -125000.0
+residualTol = 1.0e-6
+
+[TEMPERATURE]
+solver = none
+rhoCp = 1.0
+conductivity = -500.0
+residualTol = 1.0e-6
+
+[SCALAR01] #k
+density = 1.0
+diffusivity = -125000.0
+residualTol = 1.0e-6
+
+[SCALAR02] #tau
+density = 1.0
+diffusivity = -125000.0
+residualTol = 1.0e-6
+</pre></div>
+</div>
+</section>
+<section id="user-routines-usr-file">
+<h2>User Routines (.usr file)<a class="headerlink" href="#user-routines-usr-file" title="Permalink to this heading"></a></h2>
+<p>This section describes the essential code snippets required in <code class="docutils literal notranslate"><span class="pre">.usr</span></code> file for RANS simulations.
+Other details of all the subroutines can be found <a class="reference internal" href="../problem_setup/usr_file.html#case-files-usr"><span class="std std-ref">here</span></a>.</p>
+<p>Foremost, it is essential to include the following header at the beginning of the <code class="docutils literal notranslate"><span class="pre">.usr</span></code> file.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">include &quot;experimental/rans_komg.f&quot;</span>
+<span class="go">include &quot;experimental/rans_wallfunctions.f&quot;</span>
+</pre></div>
+</div>
+<p>Files in the above relative locations in the Nek5000 repo load the essential RANS subroutines.
+RANS initialization is done through the <code class="docutils literal notranslate"><span class="pre">rans_init</span></code> subroutine call from <code class="docutils literal notranslate"><span class="pre">usrdat2</span></code>. The
+required code snippet is shown below.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine usrdat2()</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+
+<span class="go">real wd</span>
+<span class="go">common /walldist/ wd(lx1,ly1,lz1,lelv)</span>
+
+<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
+<span class="go">integer ifld_k,ifld_omega, m_id</span>
+
+<span class="go">integer w_id,imid,i</span>
+<span class="go">real coeffs(30) !array for passing your own coeffs</span>
+<span class="go">logical ifcoeffs</span>
+
+<span class="go">ifld_k     = 3 !address of tke equation in t array</span>
+<span class="go">ifld_omega = 4 !address of tau equation in t array</span>
+<span class="go">ifcoeffs=.false. !set to true to pass your own coeffs</span>
+
+<span class="go">! Supported models:</span>
+<span class="go">! m_id = 0 !regularized standard k-omega (no wall functions)</span>
+<span class="go">! m_id = 1 !regularized low-Re k-omega (no wall functions)</span>
+<span class="go">! m_id = 2 !regularized standard k-omega SST (no wall functions)</span>
+<span class="go">! m_id = 3 !non-regularized standard k-omega (wall functions)</span>
+<span class="go">m_id = 4 !non-regularized standard k-tau</span>
+<span class="go">! m_id = 5 !non-regularized low Re k-tau</span>
+<span class="go">! m_id = 6 !non-regularized standard k-tau SST</span>
+
+<span class="go">! Wall distance function:</span>
+<span class="go">! w_id = 0 ! user specified</span>
+<span class="go">! w_id = 1 ! cheap_dist (path to wall, may work better for periodic boundaries)</span>
+<span class="go">w_id = 2 ! distf (coordinate difference, provides smoother function)</span>
+
+<span class="go">call rans_init(ifld_k,ifld_omega,ifcoeffs,coeffs,w_id,wd,m_id)</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">ifld_k</span></code> and <code class="docutils literal notranslate"><span class="pre">ifld_omega</span></code> variables specify the field index location of the transport variables of the
+two-equation RANS model. The specific RANS model used is identified by the <code class="docutils literal notranslate"><span class="pre">m_id</span></code> variable. All available
+RANS models are annotated in the above code. <code class="docutils literal notranslate"><span class="pre">m_id=4</span></code> invokes the recommended <span class="math notranslate nohighlight">\(k-\tau\)</span> model.
+<code class="docutils literal notranslate"><span class="pre">ifcoeffs=.false.</span></code> selects the standard RANS coefficients outlined in <a class="reference internal" href="../references.html#wilcox2008" id="id1"><span>[Wilcox2008]</span></a>. Advanced users have
+the option of specifying their own coefficients which have to populated in the <code class="docutils literal notranslate"><span class="pre">coeffs</span></code> array, with
+<code class="docutils literal notranslate"><span class="pre">ifcoeffs=.true.</span></code>. Final parameter to be aware of is the wall distance function code <code class="docutils literal notranslate"><span class="pre">w_id</span></code>. The recommended
+value for it is <code class="docutils literal notranslate"><span class="pre">w_id=2</span></code> which provides a smooth distance, populated in the <code class="docutils literal notranslate"><span class="pre">wd</span></code> array. A cheaper option
+is available through <code class="docutils literal notranslate"><span class="pre">w_id=1</span></code> which is recommended for periodic domains. The user also has the option of
+specifying their own wall distance array by setting <code class="docutils literal notranslate"><span class="pre">w_id=0</span></code> which will require <code class="docutils literal notranslate"><span class="pre">wd</span></code> array to
+be populated with user computed wall distance before the <code class="docutils literal notranslate"><span class="pre">rans_init</span></code> call.</p>
+<p>Diffusion coefficients for all fields in RANS simulation runs must be modified to include eddy viscosity.
+This is done by the following inclusions in the <code class="docutils literal notranslate"><span class="pre">uservp</span></code> subroutine</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine uservp (ix,iy,iz,eg)</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+<span class="go">include &#39;NEKUSE&#39;</span>
+
+<span class="go">integer ix,iy,iz,e,eg</span>
+
+<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
+<span class="go">integer ifld_k,ifld_omega, m_id</span>
+
+<span class="go">real rans_mut,rans_mutsk,rans_mutso,rans_turbPrandtl</span>
+<span class="go">real mu_t,Pr_t</span>
+
+<span class="go">e = gllel(eg)</span>
+
+<span class="go">Pr_t=rans_turbPrandtl()</span>
+<span class="go">mu_t=rans_mut(ix,iy,iz,e)</span>
+
+<span class="go">utrans = cpfld(ifield,2)</span>
+<span class="go">if(ifield.eq.1) then</span>
+<span class="go">        udiff = cpfld(ifield,1)+mu_t</span>
+<span class="go">elseif(ifield.eq.2) then</span>
+<span class="go">        udiff = cpfld(ifield,1)+mu_t*cpfld(ifield,2)/(Pr_t*cpfld(1,2))</span>
+<span class="go">elseif(ifield.eq.ifld_k) then</span>
+<span class="go">        udiff = cpfld(1,1)+rans_mutsk(ix,iy,iz,e)</span>
+<span class="go">elseif(ifield.eq.ifld_omega) then</span>
+<span class="go">        udiff = cpfld(1,1)+rans_mutso(ix,iy,iz,e)</span>
+<span class="go">endif</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+<p>As above, eddy viscosity, <code class="docutils literal notranslate"><span class="pre">mu_t</span></code>, is added to momentum diffusion coefficient and <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span>
+diffusion coefficients are modified as described in <a class="reference internal" href="../theory.html#equation-ktau">(22)</a>.</p>
+<p>Source terms in the <span class="math notranslate nohighlight">\(k-\tau\)</span> transport equations <a class="reference internal" href="../theory.html#equation-ktau">(22)</a> are added with the following inputs in
+<code class="docutils literal notranslate"><span class="pre">userq</span></code> subroutine</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine userq  (ix,iy,iz,ieg)</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+<span class="go">include &#39;NEKUSE&#39;</span>
+
+<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
+<span class="go">integer ifld_k,ifld_omega, m_id</span>
+
+<span class="go">real rans_kSrc,rans_omgSrc</span>
+<span class="go">real rans_kDiag,rans_omgDiag</span>
+
+<span class="go">integer ie,ix,iy,iz,ieg</span>
+<span class="go">ie = gllel(ieg)</span>
+
+<span class="go">if(ifield.eq.2) then</span>
+<span class="go">        qvol = 0.0</span>
+<span class="go">        avol = 0.0</span>
+<span class="go">elseif(ifield.eq.ifld_k) then</span>
+<span class="go">        qvol = rans_kSrc  (ix,iy,iz,ie)</span>
+<span class="go">        avol = rans_kDiag (ix,iy,iz,ie)</span>
+<span class="go">elseif(ifield.eq.ifld_omega) then</span>
+<span class="go">        qvol = rans_omgSrc (ix,iy,iz,ie)</span>
+<span class="go">        avol = rans_omgDiag(ix,iy,iz,ie)</span>
+<span class="go">endif</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+<p>Implicit source terms contributions are specified to the <code class="docutils literal notranslate"><span class="pre">avol</span></code> variable, while remaining terms are
+in the <code class="docutils literal notranslate"><span class="pre">qvol</span></code> variable.</p>
+<p>For wall-resolved <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS, Dirichlet boundary conditions for velocity, <span class="math notranslate nohighlight">\(k\)</span> and
+<span class="math notranslate nohighlight">\(\tau\)</span> are all zero. <code class="docutils literal notranslate"><span class="pre">userbc</span></code>, therefore, is simply</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine userbc(ix,iy,iz,iside,eg)</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+<span class="go">include &#39;NEKUSE&#39;</span>
+
+<span class="go">integer ix,iy,iz,iside,e,eg</span>
+
+<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
+<span class="go">integer ifld_k,ifld_omega, m_id</span>
+
+<span class="go">e = gllel(eg)</span>
+
+<span class="go">ux   = 0.0</span>
+<span class="go">uy   = 0.0</span>
+<span class="go">uz   = 0.0</span>
+
+<span class="go">if(ifield.eq.ifld_k) then</span>
+<span class="go">        temp = 0.0</span>
+<span class="go">elseif(ifield.eq.ifld_omega) then</span>
+<span class="go">        temp = 0.0</span>
+<span class="go">endif</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+<p>Initial conditions are specified in <code class="docutils literal notranslate"><span class="pre">useric</span></code> routine. For RANS simulations, a positive initial value for
+the <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> fields is recommended. Following is used for the channel simulation,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine useric (ix,iy,iz,eg)</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+<span class="go">include &#39;NEKUSE&#39;</span>
+
+<span class="go">integer ix,iy,iz,e,eg</span>
+
+<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
+<span class="go">integer ifld_k,ifld_omega, m_id</span>
+
+<span class="go">e = gllel(eg)</span>
+
+<span class="go">ux   = 1.0</span>
+<span class="go">uy   = 0.0</span>
+<span class="go">uz   = 0.0</span>
+<span class="go">temp = 0.0</span>
+
+<span class="go">if(ifield.eq.ifld_k) temp = 0.01</span>
+<span class="go">if(ifield.eq.ifld_omega) temp = 0.2</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+<p>Flow is driven through the channel by the application of streamwise mass flux, specified in <code class="docutils literal notranslate"><span class="pre">usrdat</span></code></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine usrdat</span>
+<span class="go">implicit none</span>
+<span class="go">include &#39;SIZE&#39;</span>
+<span class="go">include &#39;TOTAL&#39;</span>
+
+<span class="go">! apply mass flux to drive the flow such that Ubar = 1</span>
+<span class="go">param(54) =-1       !x-direction</span>
+<span class="go">param(55) = 1.0     !Mean Bulk velocity, Ubar</span>
+
+<span class="go">return</span>
+<span class="go">end</span>
+</pre></div>
+</div>
+</section>
+<section id="size-file">
+<h2>SIZE file<a class="headerlink" href="#size-file" title="Permalink to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file can be copied from the available template as decribed in the <a class="reference internal" href="fdlf.html#fdlf"><span class="std std-ref">Fully Developed Laminar Flow</span></a> tutorial. The user
+needs to ensure that the auxiliary fields specified in the SIZE file is at minimum <code class="docutils literal notranslate"><span class="pre">ldimt=3</span></code> for RANS
+simulations. Other details on the contents of the <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file can be found <a class="reference internal" href="../problem_setup/case_files.html#case-files-size"><span class="std std-ref">here</span></a>.</p>
+</section>
+<section id="compilation">
+<h2>Compilation<a class="headerlink" href="#compilation" title="Permalink to this heading"></a></h2>
+<p>All required case files for RANS wall-resolved channel simulation can be downloaded using the links below:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference download internal" download="" href="../_downloads/14874c260a76af04635ebea20f2b039c/chan_WR.usr"><code class="xref download docutils literal notranslate"><span class="pre">chan_WR.usr</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/1f361d1da270c135eaf7a027df9a0d13/chan_WR.par"><code class="xref download docutils literal notranslate"><span class="pre">chan_WR.par</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/c2987c6d4cbe3e1b3da12bd7a4b8fd95/chan_WR.box"><code class="xref download docutils literal notranslate"><span class="pre">chan_WR.box</span></code></a></p></li>
+<li><p><a class="reference download internal" download="" href="../_downloads/55ef0d3b6dbd2f01d80e5f74c26b4a0c/SIZE"><code class="xref download docutils literal notranslate"><span class="pre">SIZE</span></code></a></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="results">
+<h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
+<p>For reference, the results obtained from the <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS wall-resolved simulation are shown below:</p>
+<figure class="align-center" id="id2">
+<span id="fig-streamwise-vel"></span><img alt="../_images/U1.png" src="../_images/U1.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 19 </span><span class="caption-text">Normalized stream-wise velocity from wall-resolved <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS simulation</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id3">
+<span id="fig-chan-tke"></span><img alt="../_images/k.png" src="../_images/k.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 20 </span><span class="caption-text">Normalized TKE from wall-resolved <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS simulation</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<span id="fig-chan-tau"></span><img alt="../_images/tau.png" src="../_images/tau.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Normalized <span class="math notranslate nohighlight">\(\tau\)</span> from wall-resolved <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS simulation</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="neknek.html" class="btn btn-neutral float-left" title="Overlapping Overset Grids" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="multi_rans.html" class="btn btn-neutral float-right" title="Multi-Component RANS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2022, UCHICAGO ARGONNE, LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
