@@ -115,7 +115,7 @@ Nek5000 tools, procedures and user routines including,</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> for importing third party mesh file to Nek5000</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">reatore2</span></code> for converting ASCII Nek5000 mesh to binary format</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gencon</span></code> for generating mesh connectivity file</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">wiremesher</span></code> for generating wire-wrapped pin bundle</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wiremesher</span></code> for generating wire-wrapped pin bundle mesh</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">nekamg_setup</span></code> for generating algebraic multi-grid solver (AMG) files</p></li>
 <li><p><span class="math notranslate nohighlight">\(k-\tau\)</span> RANS simulation setup</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NekNek</span></code> setup</p></li>
@@ -140,7 +140,7 @@ sections of the tutorial will assume familiarity with <a class="reference intern
 <span class="go">cd inlet_bundle</span>
 </pre></div>
 </div>
-<p>It has the following structure, discussed in detail in the following sections:</p>
+<p>It has the following directories and files, discussed in detail in the following sections:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">inletMesh</span></code> –&gt; Directory containing inlet mesh related files.</p></li>
@@ -162,15 +162,20 @@ wire-wrapped pin bundle, as shown:</p>
 <figure class="align-center" id="id1">
 <span id="fig-sfr-geom"></span><img alt="../_images/geom.png" src="../_images/geom.png" />
 <figcaption>
-<p><span class="caption-number">Fig. 22 </span><span class="caption-text">Component geometries including an inlet nozzle (red) connected to a wire-wrapped pin bundle</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 21 </span><span class="caption-text">Component geometries including an inlet nozzle (red) connected to a wire-wrapped pin bundle</span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
 <p>The geometry is non-dimensionalized with respect to the pin diameter, <span class="math notranslate nohighlight">\(D\)</span>.
 Axial extent of the inlet nozzle component is <span class="math notranslate nohighlight">\(z/D=[-4.75,0.25]\)</span> and the wire-pin bundle axial dimensions
 are <span class="math notranslate nohighlight">\(z/D=[0,12.5]\)</span>.  The two components, therefore, have an axial overlap of <span class="math notranslate nohighlight">\(\Delta z/D= 0.25\)</span>,
-while the lateral dimensions are conformal. Users should note that a reasonable overlap in the computational domains is imperative for a
-robust <code class="docutils literal notranslate"><span class="pre">NekNek</span></code> simulation. As a general rule, increasing the extent of overlap will render more stability
-to the coupled solver. Pitch-to-diameter ratio of the wire-pin bundle is 1.13 and the wire diameter is
+while the lateral dimensions are conformal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Note</dt>
+<dd class="field-odd"><p>A reasonable overlap in the computational domains is imperative for a robust <code class="docutils literal notranslate"><span class="pre">NekNek</span></code> simulation.
+As a general rule, increasing the extent of overlap will render more stability to the coupled solver.</p>
+</dd>
+</dl>
+<p>Pitch-to-diameter ratio of the wire-pin bundle is 1.13 and the wire diameter is
 <span class="math notranslate nohighlight">\(D_w=0.12875D\)</span>. To prevent sharp corners, a fillet of diameter <span class="math notranslate nohighlight">\(0.05 D\)</span> is introduced between the
 pin and the wire and the wire is slightly submerged in the pin by a distance of <span class="math notranslate nohighlight">\(0.025D_w\)</span>.
 The side length of the hexagonal bundle is <span class="math notranslate nohighlight">\(1.865D\)</span> and the diameter of the inlet nozzle boundary
@@ -188,26 +193,26 @@ is specified on all remaining boundaries.</p>
 <span id="tab-nb-bc"></span><table class="docutils align-default" id="id2">
 <caption><span class="caption-number">Table 29 </span><span class="caption-text">Flow and Thermal Properties</span><a class="headerlink" href="#id2" title="Permalink to this table"></a></caption>
 <colgroup>
-<col style="width: 47%" />
-<col style="width: 53%" />
+<col style="width: 61%" />
+<col style="width: 39%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(Re_{in}\)</span></p></td>
+<tr class="row-odd"><td><p>Inlet Reynolds number, <span class="math notranslate nohighlight">\(Re_{in}\)</span></p></td>
 <td><p>60000</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Re_{b}\)</span></p></td>
+<tr class="row-even"><td><p>Bundle Reynolds number, <span class="math notranslate nohighlight">\(Re_{b}\)</span></p></td>
 <td><p>10000 (approx)</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\nu^*\)</span></p></td>
+<tr class="row-odd"><td><p>Dimensionless Kinematic visocity, <span class="math notranslate nohighlight">\(\nu^*\)</span></p></td>
 <td><p>3.125e-5</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Pr\)</span></p></td>
+<tr class="row-even"><td><p>Prandtl Number, <span class="math notranslate nohighlight">\(Pr\)</span></p></td>
 <td><p>0.005</p></td>
 </tr>
-<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(Pe\)</span></p></td>
+<tr class="row-odd"><td><p>Peclet Number, <span class="math notranslate nohighlight">\(Pe\)</span></p></td>
 <td><p>160</p></td>
 </tr>
-<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(Pr_t\)</span></p></td>
+<tr class="row-even"><td><p>Turbulent Prandtl number, <span class="math notranslate nohighlight">\(Pr_t\)</span></p></td>
 <td><p>1.5</p></td>
 </tr>
 </tbody>
@@ -220,7 +225,7 @@ is specified on all remaining boundaries.</p>
 <p>A third-party meshing tool (e.g., ANSYS ICEM) is required for generating the mesh for the inlet component,
 which must be saved as an <code class="docutils literal notranslate"><span class="pre">EXODUS</span> <span class="pre">II</span> <span class="pre">(.exo)</span></code> mesh file. Nek5000 offers the <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> mesh conversion tool
 for converting an <code class="docutils literal notranslate"><span class="pre">.exo</span></code> mesh file to <code class="docutils literal notranslate"><span class="pre">.re2</span></code> format. Ensure that the <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> tool is compiled, available
-in the  <code class="docutils literal notranslate"><span class="pre">Nek5000</span></code> directory:</p>
+in the  <code class="docutils literal notranslate"><span class="pre">Nek5000/tools</span></code> directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd ~/Nek5000/tools</span>
 <span class="go">./maketools all</span>
 </pre></div>
@@ -379,7 +384,7 @@ control the mesh resolution and contribute towards a successful mesh, include:</
 <li><p><code class="docutils literal notranslate"><span class="pre">Col</span></code> –&gt; Controls the resolution in the azimuthal direction.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Row</span></code> –&gt; Controls the resolution in radial direction.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Rowdist</span></code> –&gt; Controls layer width distribution percentage in radial direction, from interior to pin wall. Must add up to 100 and entries must be equal to <code class="docutils literal notranslate"><span class="pre">Row</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Lay</span></code> –&gt; Controls resolution in axial direction. Specifies number of axial elements in length equal to 60 degree rotation of wire.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lay</span></code> –&gt; Controls resolution in axial direction. Specifies number of elements in axial length equal to 60 degree rotation of wire.</p></li>
 </ul>
 </div></blockquote>
 <p>The mesher is initiated by simply running the <code class="docutils literal notranslate"><span class="pre">doall_binary</span></code> bash file. Ensure that both Matlab and Python
@@ -398,7 +403,7 @@ ASCII mesh file for Nek5000. Convert this into the binary format by running <cod
 </pre></div>
 </div>
 <p>We finally obtain the <code class="docutils literal notranslate"><span class="pre">bundle.re2</span></code> file which contains the pin-wire bundle mesh for Nek5000 run. Boundary IDs
-are assigned by the wire mesher as:</p>
+are assigned by the <code class="docutils literal notranslate"><span class="pre">wiremesher</span></code> as:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>1 –&gt; Fuel pin walls</p></li>
@@ -529,9 +534,11 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <span class="go">residualTol = 1.0e-6</span>
 </pre></div>
 </div>
-<p>Both parameter files are identical, except for one important difference. If the user wants to restart the case from
+<p>Both parameter files are identical, except for one important difference. To restart the case from
 any given time, separate restart file names should be specified to the <code class="docutils literal notranslate"><span class="pre">startFrom</span></code> parameter. It is critical that the
-properties and time step size are identical for both <code class="docutils literal notranslate"><span class="pre">.par</span></code> files.</p>
+properties and time step size are identical for both <code class="docutils literal notranslate"><span class="pre">.par</span></code> files. Values are assigned in dimensionless form;
+density is set to unity, viscosity and diffusivity are set to <span class="math notranslate nohighlight">\(1/\nu^*\)</span> and conductivity to Peclet number
+(-ve sign indicates that solver is run in dimensionless form).</p>
 <p>Note that given the large size of meshes, the <code class="docutils literal notranslate"><span class="pre">preconditioner</span></code> must be set to <code class="docutils literal notranslate"><span class="pre">semg_amg</span></code>. This invokes the algebraic
 multigrid solver for pressure instead of the default <code class="docutils literal notranslate"><span class="pre">XXT</span></code> solver.</p>
 <p>Further details on all parameters of <code class="docutils literal notranslate"><span class="pre">.par</span></code> file can be found <a class="reference internal" href="../problem_setup/case_files.html#case-files-par"><span class="std std-ref">here</span></a>.</p>
@@ -569,7 +576,7 @@ a comprehensive understanding of routines from these simpler cases is recommende
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ngeom</span></code> specifies the number of overlapping Schwarz-like iterations, while <code class="docutils literal notranslate"><span class="pre">ninter</span></code> controls the time
-extrapolation order of boundary conditions of the overlapping interface. <code class="docutils literal notranslate"><span class="pre">ninter=1</span></code> is unconditionally
+extrapolation order of boundary conditions at the overlapping interface. <code class="docutils literal notranslate"><span class="pre">ninter=1</span></code> is unconditionally
 stable, while a higher temporal order will typically require more iterations for stability (<code class="docutils literal notranslate"><span class="pre">ngeom&gt;2</span></code>).
 For computational savings, we maintain first order temporal extrapolation for this tutorial.
 <code class="docutils literal notranslate"><span class="pre">nfld_neknek</span></code> specifies the number of total field arrays that are transferred between the two meshes
@@ -666,15 +673,16 @@ for routines where <code class="docutils literal notranslate"><span class="pre">
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">NekNek</span></code> solver launches two Nek5000 sessions simultaneously and field data transfer is performed between the
-two sessions after each time iteration. Each session is assigned a unique id, stored in the variable <code class="docutils literal notranslate"><span class="pre">idsess</span></code>.
+two sessions on each time iteration. Each session is assigned a unique id, stored in the variable <code class="docutils literal notranslate"><span class="pre">idsess</span></code>.
 Here, <code class="docutils literal notranslate"><span class="pre">idsess=0</span></code> is assigned to the inlet component solve and <code class="docutils literal notranslate"><span class="pre">idsess=1</span></code> to bundle component. Boundary
 conditions are assigned using this variable for each component, as shown above.</p>
-<p>Recall the boundary IDs assigned to each component, described in the preceding section. Character codes
-for different boundary conditions are stored in the <code class="docutils literal notranslate"><span class="pre">cbc</span></code> array. Their detailed description can be found in
-<a class="reference internal" href="../problem_setup/BCs.html#boundary-conditions"><span class="std std-ref">Boundary Conditions</span></a>. For each component, the nested loops go through all elements and their faces and
-populates <code class="docutils literal notranslate"><span class="pre">cbc</span></code> array for all fields based on mesh assigned boundary IDs. Note that <code class="docutils literal notranslate"><span class="pre">int</span></code> boundary condition
-must be assigned to the overlapping surfaces on the inlet and bundle components. <code class="docutils literal notranslate"><span class="pre">int</span></code> condition is replaced
-internally with Dirichlet boundary conditions subsequently by Nek5000. Insulated</p>
+<p>Recall the boundary IDs assigned to each component during the mesh generation process, described in the preceding section.
+Character codes for different boundary conditions are stored in the <code class="docutils literal notranslate"><span class="pre">cbc</span></code> array. Their detailed description can be found in
+<a class="reference internal" href="../problem_setup/BCs.html#boundary-conditions"><span class="std std-ref">Boundary Conditions</span></a>. For each component, the nested loops go through all elements and their faces, populating
+<code class="docutils literal notranslate"><span class="pre">cbc</span></code> array for all fields based on mesh assigned boundary IDs. Note that <code class="docutils literal notranslate"><span class="pre">int</span></code> boundary condition
+must be assigned to the overlapping surfaces of the inlet and bundle components. <code class="docutils literal notranslate"><span class="pre">int</span></code> condition is replaced
+internally with Dirichlet boundary conditions subsequently by Nek5000. Flux boundary condition, <code class="docutils literal notranslate"><span class="pre">f</span></code>, is assigned to
+pin walls for temperature field while insulated, <code class="docutils literal notranslate"><span class="pre">I</span></code>, is assigned to all other walls.</p>
 <p>With regards to RANS initialization; <code class="docutils literal notranslate"><span class="pre">m_id=4</span></code> selects the <span class="math notranslate nohighlight">\(k-\tau\)</span> RANS model and <code class="docutils literal notranslate"><span class="pre">w_id=2</span></code> selects the
 wall distance computing algorithm. <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> fields are stored in the 3rd and 4th index, respectively,
 specified with <code class="docutils literal notranslate"><span class="pre">ifld_k</span></code> and <code class="docutils literal notranslate"><span class="pre">ifld_omega</span></code>. Set <code class="docutils literal notranslate"><span class="pre">ifcoeffs</span></code> to <code class="docutils literal notranslate"><span class="pre">.true.</span></code> only if user specified RANS coefficients
@@ -755,8 +763,9 @@ to the basic <a class="reference internal" href="rans.html#rans"><span class="st
 <span class="go">end</span>
 </pre></div>
 </div>
-<p>Note that either component does not have any volumetric source heat source and hence <code class="docutils literal notranslate"><span class="pre">qvol=0</span></code> for <code class="docutils literal notranslate"><span class="pre">ifield</span> <span class="pre">.eq.</span> <span class="pre">2</span></code>.</p>
-<p>Initial conditions are specified in <code class="docutils literal notranslate"><span class="pre">useric</span></code>. Similar values are assigned to both components and thus, the routine
+<p>Note that either component does not have any volumetric source heat source and hence <code class="docutils literal notranslate"><span class="pre">qvol=0</span></code> for temperature
+field (<code class="docutils literal notranslate"><span class="pre">ifield.eq.2</span></code>).</p>
+<p>Initial conditions are specified in <code class="docutils literal notranslate"><span class="pre">useric</span></code>. Similar values are assigned to both components and, thus, the routine
 implementation is straightforward. Temperature is initalized to 1 for both components.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine useric (ix,iy,iz,eg)</span>
 <span class="go">implicit none</span>
@@ -785,10 +794,10 @@ implementation is straightforward. Temperature is initalized to 1 for both compo
 </pre></div>
 </div>
 <p>Boundary conditions are assigned in <code class="docutils literal notranslate"><span class="pre">userbc</span></code>. For the inlet component, inlet conditions are assigned using data
-generated from RANS simulation in a pipe with idential diameter as the inlet surface. The data is stored in the
+generated from RANS simulation in a pipe with identical diameter as the inlet surface. The data is stored in the
 <code class="docutils literal notranslate"><span class="pre">InletProf.dat</span></code> file which contains axial velocity, <span class="math notranslate nohighlight">\(k\)</span> and <span class="math notranslate nohighlight">\(\tau\)</span> information as a function of
 radial wall distance. Two plugin subroutines are required, which perform spline interpolation of the data to the
-inlet surface, viz., <code class="docutils literal notranslate"><span class="pre">getInletProf</span></code> and <code class="docutils literal notranslate"><span class="pre">init_prof</span></code>. These are provided for the user in the <code class="docutils literal notranslate"><span class="pre">inlet_bundle.usr</span></code>
+inlet mesh, viz., <code class="docutils literal notranslate"><span class="pre">getInletProf</span></code> and <code class="docutils literal notranslate"><span class="pre">init_prof</span></code>. These are provided for the user in the <code class="docutils literal notranslate"><span class="pre">inlet_bundle.usr</span></code>
 file and can be used without modification. The usage is shown below:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine userbc (ix,iy,iz,iside,eg)</span>
 <span class="go">implicit none</span>
@@ -859,12 +868,12 @@ the wall distance array, <code class="docutils literal notranslate"><span class=
 limited to inlet radius to avoid spline from extrapolating. Inlet component is identified with <code class="docutils literal notranslate"><span class="pre">idsess.eq.0</span></code> and
 inlet surface with its boundary ID, <code class="docutils literal notranslate"><span class="pre">id_face.eq.2</span></code>.</p>
 <p>Temperature flux must also be assigned in <code class="docutils literal notranslate"><span class="pre">userbc</span></code> on the pin surface walls. As mentioned earlier, non-dimensional
-unit heat flux is assigned from half axial length of the bundle (<code class="docutils literal notranslate"><span class="pre">zmid</span></code>). A smoothed flux profile is imposed using
+unit heat flux is assigned from half axial length of the bundle (<code class="docutils literal notranslate"><span class="pre">zmid</span></code>). A smoothed axial flux profile is imposed using
 <code class="docutils literal notranslate"><span class="pre">tanh</span></code> step function as shown. Flux on all remaining walls is zero.</p>
 </section>
 <section id="size-file">
 <h2>SIZE file<a class="headerlink" href="#size-file" title="Permalink to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file used for this tutorial is inlcuded in the provided tar file. The user needs to ensure that the
+<p>The <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file used for this tutorial is included in the provided tar file. The user needs to ensure that the
 auxiliary fields specified in the SIZE file is at minimum <code class="docutils literal notranslate"><span class="pre">ldimt=3</span></code> for RANS. Further, <code class="docutils literal notranslate"><span class="pre">nsessmax</span></code> must be
 set to 2 for <code class="docutils literal notranslate"><span class="pre">NEKNEK</span></code> simulation. Other details on the contents of the <code class="docutils literal notranslate"><span class="pre">SIZE</span></code> file can be found
 <a class="reference internal" href="../problem_setup/case_files.html#case-files-size"><span class="std std-ref">here</span></a>.</p>
@@ -877,19 +886,19 @@ The command in the script that launches the <code class="docutils literal notran
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">neknek inlet bundle $((ntpn*nodes/2)) $((ntpn*nodes/2))</span>
 </pre></div>
 </div>
-<p>Here, <code class="docutils literal notranslate"><span class="pre">nodes</span></code> variable is the user input on number of nodes. <code class="docutils literal notranslate"><span class="pre">ntpn</span></code> is the number of processors per node. First two
-parameters are the names of the component meshes and the following two parameters specify the number of total threads
-used for each session, respectively. We use equal number of threads for this turorial, but the user may modify the
-distribution of threads as needed. The script can be adopted suitably for the cluster being used. On Sawtooth cluster,
+<p>Here, <code class="docutils literal notranslate"><span class="pre">nodes</span></code> variable is the user input on number of nodes assigned for the job. <code class="docutils literal notranslate"><span class="pre">ntpn</span></code> is the number of processors/threads
+per node. First two parameters are the names of the component meshes and the following two parameters specify the number of total
+threads used for each session, respectively. We use equal number of threads for this turorial, but the user may modify the
+distribution of threads as needed. The script can be adopted suitably for any cluster being used. On Sawtooth cluster,
 the script is launched as follows:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./neksaw inlet_bundle 40 4 30</span>
 </pre></div>
 </div>
 <p>The above runs <code class="docutils literal notranslate"><span class="pre">NEKNEK</span></code> job on 40 nodes (20 dedicated to each session) for 4 hours and 30 minutes. Remember to specify
-the project name before launching, assigned to <code class="docutils literal notranslate"><span class="pre">prj</span></code> variable in the script.</p>
+the project name before launching, assigned to <code class="docutils literal notranslate"><span class="pre">prj</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">neksaw</span></code> script file.</p>
 <p>On the first run, Nek5000 will generate files for setting up the AMG (algebraic multi-grid) solver with the suffix
 <code class="docutils literal notranslate"><span class="pre">amgdmp_p.dat</span></code>, <code class="docutils literal notranslate"><span class="pre">amgdmp_i.dat</span></code> and <code class="docutils literal notranslate"><span class="pre">amgdmp_j.dat</span></code> for each component. Run the <code class="docutils literal notranslate"><span class="pre">nekamg_setup</span></code> tool to
-create the setup files. The prompts will appear as shown:</p>
+create the ANG setup files. The prompts will appear as shown:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enter name prefix of input file(s):</span>
 <span class="go">inlet</span>
 </pre></div>
@@ -910,18 +919,18 @@ create the setup files. The prompts will appear as shown:</p>
 <span class="go">0</span>
 </pre></div>
 </div>
-<p>User may choose any of the coarsening solver and interpolation methods available which succeffully converges.
+<p>User may choose any of the coarsening solver and interpolation methods available which lead to successful convergence.
 For this tutorial we choose HMIS and classical interpolation for both components.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enter smoother tolerance [0.5]:</span>
 <span class="go">0.9</span>
 </pre></div>
 </div>
 <p>Repeat the steps for the bundle component. Upon completion three files will be written containing AMG matrices.</p>
-<p>On the next run, Nek5000 will run normally and the user may proceed with the simulation.</p>
+<p>On the next run, Nek5000 will advance normally and the user may proceed with the simulation.</p>
 </section>
 <section id="helpful-tips">
 <h2>Helpful Tips<a class="headerlink" href="#helpful-tips" title="Permalink to this heading"></a></h2>
-<p>The following tips may be helpful to make the simulations tractable:</p>
+<p>The following tips may be helpful to make the simulations more tractable:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Commence with a small time step size and high viscosity value (low Re) to stabilize the pressure solver
@@ -937,7 +946,8 @@ file:</p></li>
 <span class="go">extrapolation = OIFS</span>
 </pre></div>
 </div>
-<p>It is necessary to specify target CFL for the OIFS solver to prescribe the number of extrapolation iterations.</p>
+<p>It is necessary to specify target CFL for the OIFS solver. It calculates the number of extrapolation iterations
+based on <code class="docutils literal notranslate"><span class="pre">targetCFL</span></code> value.</p>
 </section>
 <section id="results">
 <h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
