@@ -345,25 +345,26 @@ meshing software of user’s choice. For the inlet nozzle component, the followi
 </div>
 <p>It contains two sub-directories, viz., <code class="docutils literal notranslate"><span class="pre">wire2nek</span></code> and <code class="docutils literal notranslate"><span class="pre">matlab</span></code>. Input parameters for the meshing
 script are specified in the header of the <code class="docutils literal notranslate"><span class="pre">matlab/wire_mesher.m</span></code> file, as shown:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">% </span>Mesh parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-<span class="go">D    = 8.00;           % pin diameter  (mm)</span>
-<span class="go">P    = 9.04;           % pin pitch</span>
-<span class="go">Dw   = 1.03;           % wire diameter (mm)</span>
-<span class="go">Df   = 0.4;            % fillet diameter (mm) (making this too small can cause bad elements)</span>
-<span class="go">H    = 100.0;            % wire pitch (mm)</span>
-<span class="go">T    = 0.05*Dw         % trimmed off of wire (mm) (cuts off the tip of the wire)</span>
-<span class="go">S    = 0.025*Dw;       % Wire submerged (mm) (how sunken in the wire is into the pin)</span>
-<span class="go">Adjust = 1;            % if 1, Adjust flattness of wire when away from pins (if trimmed is on, only trim when wire passes pin)</span>
-<span class="go">iFtF   = 0;            % if 1, add layer next to outer can</span>
-<span class="go">G  = 0.0525;           % gap between wire and wall (mm)</span>
-<span class="go">FtF_rescale = 1.0086;  % rescaling of outer FtF, the difference is given by an additional mesh layer - MUST BE BIGGER THAN 1</span>
-<span class="go">ne=2;                  % Number of edge pins. e.g., ne=3 for 19 pin assembly. MINIMUM is 2</span>
-<span class="go">Col=12;                % Number of columns per block (5 or 6 blocks surround each pin)</span>
-<span class="go">Row=3;                 % Number of rows per block (2 blocks fit between neighboring pins)</span>
-<span class="go">Rowdist=[65 30 5];     % distribution of elements in the row (for creating boundary layer)</span>
-<span class="go">Lay=20;                % Number of layers for 60 degree turn (this should be a reasonable number - above 10, tested typically for ~20)</span>
-<span class="go">rperiodic=1.0;         % Less than zero if periodic, Greater than zero if inlet/outlet</span>
-<span class="go">ipolar=0.25*(D/H)*360. % Starting polar orientation of wire (in degrees)</span>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">% Mesh parameters %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><span class="w"></span>
+<span class="n">D</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mf">8.00</span><span class="p">;</span><span class="w">            </span><span class="c">%  pin diameter  (mm)</span><span class="w"></span>
+<span class="n">P</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mf">9.04</span><span class="p">;</span><span class="w">            </span><span class="c">%  pin pitch</span><span class="w"></span>
+<span class="n">Dw</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="mf">1.03</span><span class="p">;</span><span class="w">            </span><span class="c">%  wire diameter (mm)</span><span class="w"></span>
+<span class="n">Df</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="mf">0.4</span><span class="p">;</span><span class="w">             </span><span class="c">%  fillet diameter (mm) (making this too small can cause bad elements)</span><span class="w"></span>
+<span class="n">H</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mf">100.0</span><span class="p">;</span><span class="w">           </span><span class="c">%  wire pitch (mm)</span><span class="w"></span>
+<span class="n">T</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mf">0.05</span><span class="o">*</span><span class="n">Dw</span><span class="w">          </span><span class="c">% trimmed off of wire (mm) (cuts off the tip of the wire)</span><span class="w"></span>
+<span class="n">S</span><span class="w">    </span><span class="p">=</span><span class="w"> </span><span class="mf">0.025</span><span class="o">*</span><span class="n">Dw</span><span class="p">;</span><span class="w">        </span><span class="c">% Wire submerged (mm) (how sunken in the wire is into the pin)</span><span class="w"></span>
+<span class="n">Adjust</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">             </span><span class="c">% if 1, Adjust flattness of wire when away from pins (if trimmed is on, only trim when wire passes pin)</span><span class="w"></span>
+<span class="n">iFtF</span><span class="w">   </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">             </span><span class="c">% if 1, add layer next to outer can</span><span class="w"></span>
+<span class="n">G</span><span class="w">  </span><span class="p">=</span><span class="w"> </span><span class="mf">0.0525</span><span class="p">;</span><span class="w">            </span><span class="c">% gap between wire and wall (mm)</span><span class="w"></span>
+<span class="n">FtF_rescale</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1.0086</span><span class="p">;</span><span class="w">   </span><span class="c">% rescaling of outer FtF, the difference is given by an additional mesh layer - MUST BE BIGGER THAN 1</span><span class="w"></span>
+<span class="n">ne</span><span class="p">=</span><span class="mi">2</span><span class="p">;</span><span class="w">                   </span><span class="c">% Number of edge pins. e.g., ne=3 for 19 pin assembly. MINIMUM is 2</span><span class="w"></span>
+<span class="n">Col</span><span class="p">=</span><span class="mi">12</span><span class="p">;</span><span class="w">                 </span><span class="c">% Number of columns per block (5 or 6 blocks surround each pin)</span><span class="w"></span>
+<span class="n">Row</span><span class="p">=</span><span class="mi">3</span><span class="p">;</span><span class="w">                  </span><span class="c">% Number of rows per block (2 blocks fit between neighboring pins)</span><span class="w"></span>
+<span class="n">Rowdist</span><span class="p">=[</span><span class="mi">65</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">5</span><span class="p">];</span><span class="w">      </span><span class="c">% distribution of elements in the row (for creating boundary layer)</span><span class="w"></span>
+<span class="n">Lay</span><span class="p">=</span><span class="mi">20</span><span class="p">;</span><span class="w">                 </span><span class="c">% Number of layers for 60 degree turn (this should be a reasonable number - above 10, tested typically for ~20)</span><span class="w"></span>
+<span class="n">rperiodic</span><span class="p">=</span><span class="mf">1.0</span><span class="p">;</span><span class="w">          </span><span class="c">% Less than zero if periodic, Greater than zero if inlet/outlet</span><span class="w"></span>
+<span class="n">ipolar</span><span class="p">=</span><span class="mf">0.25</span><span class="o">*</span><span class="p">(</span><span class="n">D</span><span class="o">/</span><span class="n">H</span><span class="p">)</span><span class="o">*</span><span class="mi">360</span><span class="w">   </span><span class="c">% Starting polar orientation of wire (in degrees)</span><span class="w"></span>
+<span class="c">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><span class="w"></span>
 </pre></div>
 </div>
 <p>All input variables are suitably annotated in the above code snippet. Although all input dimensions shown are in <code class="docutils literal notranslate"><span class="pre">mm</span></code>, the
@@ -446,92 +447,90 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <section id="parameter-file-par">
 <h2>Parameter File (.par)<a class="headerlink" href="#parameter-file-par" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">NEKNEK</span></code> requires separate <code class="docutils literal notranslate"><span class="pre">.par</span></code> file for each of the components. The files are included in the parent folder and shown below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span>
-<span class="gp"># </span>nek parameter file - inlet.par
-<span class="gp">#</span>
-<span class="go">[GENERAL]</span>
-<span class="gp">#</span><span class="nv">startFrom</span> <span class="o">=</span> inlet.fld
-<span class="go">stopAt = numSteps</span>
-<span class="go">numSteps = 20000</span>
-<span class="go">dt = 1.0e-5</span>
-<span class="go">writeInterval = 5000</span>
-<span class="go">timeStepper = BDF2</span>
-<span class="gp">#</span><span class="nv">targetCFL</span><span class="o">=</span><span class="m">4</span>.0
-<span class="gp">#</span><span class="nv">extrapolation</span> <span class="o">=</span> OIFS
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span><span class="w"></span>
+<span class="c1">#nek parameter file - inlet.par</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="k">[GENERAL]</span><span class="w"></span>
+<span class="c1">#startFrom = inlet.fld</span><span class="w"></span>
+<span class="na">stopAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">numSteps</span><span class="w"></span>
+<span class="na">numSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"></span>
+<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-4</span><span class="w"></span>
+<span class="na">writeInterval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
+<span class="na">timeStepper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BDF2</span><span class="w"></span>
+<span class="c1">#targetCFL = 4.0</span><span class="w"></span>
+<span class="c1">#extrapolation = OIFS</span><span class="w"></span>
 
-<span class="go">[PROBLEMTYPE]</span>
-<span class="go">variableProperties = yes</span>
-<span class="go">stressFormulation = yes</span>
+<span class="k">[PROBLEMTYPE]</span><span class="w"></span>
+<span class="na">variableProperties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
+<span class="na">stressFormulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
-<span class="go">[PRESSURE]</span>
-<span class="go">preconditioner = semg_amg</span>
-<span class="go">residualTol = 1.0e-5</span>
-<span class="go">residualProj = yes</span>
+<span class="k">[PRESSURE]</span><span class="w"></span>
+<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-5</span><span class="w"></span>
+<span class="na">residualProj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
-<span class="go">[VELOCITY]</span>
-<span class="go">density = 1.0</span>
-<span class="go">viscosity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[VELOCITY]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">viscosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[TEMPERATURE]</span>
-<span class="go">solver = none</span>
-<span class="go">rhoCp = 1.0</span>
-<span class="go">conductivity = -160.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[TEMPERATURE]</span><span class="w"></span>
+<span class="na">rhoCp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">conductivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-160.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[SCALAR01]</span>
-<span class="go">density = 1.0</span>
-<span class="go">diffusivity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[SCALAR01]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">diffusivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[SCALAR02]</span>
-<span class="go">density = 1.0</span>
-<span class="go">diffusivity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[SCALAR02]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">diffusivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span>
-<span class="gp"># </span>nek parameter file - bundle.par
-<span class="gp">#</span>
-<span class="go">[GENERAL]</span>
-<span class="gp">#</span><span class="nv">startFrom</span> <span class="o">=</span> bundle.fld
-<span class="go">stopAt = numSteps</span>
-<span class="go">numSteps = 20000</span>
-<span class="go">dt = 1.0e-5</span>
-<span class="go">writeInterval = 5000</span>
-<span class="go">timeStepper = BDF2</span>
-<span class="gp">#</span><span class="nv">targetCFL</span> <span class="o">=</span> <span class="m">4</span>.0
-<span class="gp">#</span><span class="nv">extrapolation</span> <span class="o">=</span> OIFS
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span><span class="w"></span>
+<span class="c1">#nek parameter file - bundle.par</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="k">[GENERAL]</span><span class="w"></span>
+<span class="c1">#startFrom = bundle.fld</span><span class="w"></span>
+<span class="na">stopAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">numSteps</span><span class="w"></span>
+<span class="na">numSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"></span>
+<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-4</span><span class="w"></span>
+<span class="na">writeInterval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
+<span class="na">timeStepper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BDF2</span><span class="w"></span>
+<span class="c1">#targetCFL = 4.0</span><span class="w"></span>
+<span class="c1">#extrapolation = OIFS</span><span class="w"></span>
+<span class="w"> </span>
+<span class="k">[PROBLEMTYPE]</span><span class="w"></span>
+<span class="na">variableProperties</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
+<span class="na">stressFormulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
-<span class="go">[PROBLEMTYPE]</span>
-<span class="go">variableProperties = yes</span>
-<span class="go">stressFormulation = yes</span>
+<span class="k">[PRESSURE]</span><span class="w"></span>
+<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-5</span><span class="w"></span>
+<span class="na">residualProj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
-<span class="go">[PRESSURE]</span>
-<span class="go">preconditioner = semg_amg</span>
-<span class="go">residualTol = 1.0e-5</span>
-<span class="go">residualProj = yes</span>
+<span class="k">[VELOCITY]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">viscosity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[VELOCITY]</span>
-<span class="go">density = 1.0</span>
-<span class="go">viscosity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[TEMPERATURE]</span><span class="w"></span>
+<span class="na">rhoCp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">conductivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-160.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[TEMPERATURE]</span>
-<span class="go">solver = none</span>
-<span class="go">rhoCp = 1.0</span>
-<span class="go">conductivity = -160.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[SCALAR01]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">diffusivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 
-<span class="go">[SCALAR01]</span>
-<span class="go">density = 1.0</span>
-<span class="go">diffusivity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
-
-<span class="go">[SCALAR02]</span>
-<span class="go">density = 1.0</span>
-<span class="go">diffusivity = -32000.0</span>
-<span class="go">residualTol = 1.0e-6</span>
+<span class="k">[SCALAR02]</span><span class="w"></span>
+<span class="na">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span><span class="w"></span>
+<span class="na">diffusivity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">-32000.0</span><span class="w"></span>
+<span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Both parameter files are identical, except for one important difference. To restart the case from
@@ -549,30 +548,30 @@ multigrid solver for pressure instead of the default <code class="docutils liter
 in the <a class="reference internal" href="rans.html#rans"><span class="std std-ref">RANS Channel</span></a> tutorial. Although this section decribes all user routines required for a NekNek RANS simulation in detail,
 a comprehensive understanding of routines from these simpler cases is recommended before proceeding.</p>
 <p>Following headers are required at the beginning of <code class="docutils literal notranslate"><span class="pre">.usr</span></code> file for loading RANS related subroutines:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">include &quot;experimental/rans_komg.f&quot;</span>
-<span class="go">include &quot;experimental/rans_wallfunctions.f&quot;</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s2">&quot;experimental/rans_komg.f&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s2">&quot;experimental/rans_wallfunctions.f&quot;</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">NekNek</span></code> related parameters are specified in <code class="docutils literal notranslate"><span class="pre">usrdat</span></code> routine:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine usrdat()</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-
-<span class="go">!   ngeom - parameter controlling the number of iterations,</span>
-<span class="go">!   set to ngeom=2 by default (no iterations)</span>
-<span class="go">!   One could change the number of iterations as</span>
-<span class="go">ngeom = 2</span>
-
-<span class="go">!   ninter - parameter controlling the order of interface extrapolation for neknek,</span>
-<span class="go">!   set to ninter=1 by default</span>
-<span class="go">!   Caution: if ninter greater than 1 is chosen, ngeom greater than 2</span>
-<span class="go">!   should be used for stability</span>
-<span class="go">ninter = 1</span>
-
-<span class="go">nfld_neknek=7 !velocity+pressure+t+sc1+sc2</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">usrdat</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="c">!     ngeom - parameter controlling the number of iterations,</span>
+<span class="c">!     set to ngeom=2 by default (no iterations)</span>
+<span class="c">!     One could change the number of iterations as</span>
+<span class="w">      </span><span class="n">ngeom</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w"></span>
+<span class="w">      </span>
+<span class="c">!     ninter - parameter controlling the order of interface extrapolation for neknek,</span>
+<span class="c">!     set to ninter=1 by default</span>
+<span class="c">!     Caution: if ninter greater than 1 is chosen, ngeom greater than 2</span>
+<span class="c">!     should be used for stability</span>
+<span class="w">      </span><span class="n">ninter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">nfld_neknek</span><span class="o">=</span><span class="mi">7</span><span class="w">             </span><span class="c">!velocity+pressure+t+sc1+sc2</span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">ngeom</span></code> specifies the number of overlapping Schwarz-like iterations, while <code class="docutils literal notranslate"><span class="pre">ninter</span></code> controls the time
@@ -589,87 +588,87 @@ for routines where <code class="docutils literal notranslate"><span class="pre">
 </dd>
 </dl>
 <p>Boundary Condition specification and RANS initialization is performed in <code class="docutils literal notranslate"><span class="pre">usrdat2</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine usrdat2()</span>
-<span class="go">implicit none</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-<span class="go">include &#39;NEKNEK&#39;</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">usrdat2</span><span class="p">()</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKNEK&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">real </span><span class="n">wd</span><span class="w"></span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">walldist</span><span class="o">/</span><span class="w"> </span><span class="n">wd</span><span class="p">(</span><span class="n">lx1</span><span class="p">,</span><span class="n">ly1</span><span class="p">,</span><span class="n">lz1</span><span class="p">,</span><span class="n">lelv</span><span class="p">)</span><span class="w"></span>
 
-<span class="go">real wd</span>
-<span class="go">common /walldist/ wd(lx1,ly1,lz1,lelv)</span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">rans_usr</span><span class="o">/</span><span class="w"> </span><span class="n">ifld_k</span><span class="p">,</span><span class="w"> </span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">w_id</span><span class="p">,</span><span class="n">imid</span><span class="p">,</span><span class="n">i</span><span class="w"></span>
+<span class="w">      </span><span class="kt">real </span><span class="n">coeffs</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span><span class="w">           </span><span class="c">!array for passing your own coeffs</span>
+<span class="w">      </span><span class="kt">logical </span><span class="n">ifcoeffs</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="n">id_face</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">idsess</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span><span class="w">       </span><span class="c">!BCs for inlet mesh</span>
+<span class="w">         </span><span class="k">do </span><span class="n">iel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nelt</span><span class="w"></span>
+<span class="w">            </span><span class="k">do </span><span class="n">ifc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">ndim</span><span class="w"></span>
+<span class="w">               </span><span class="n">id_face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">               </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!inlet</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;v  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">               </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!interface</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">               </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!walls</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;W  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">               </span><span class="k">endif</span>
+<span class="k">            enddo</span>
+<span class="k">         enddo</span>
+<span class="k">      else</span><span class="w">                      </span><span class="c">!BCs for pin-wire bundle mesh</span>
+<span class="w">         </span><span class="k">do </span><span class="n">iel</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">nelt</span><span class="w"></span>
+<span class="w">            </span><span class="k">do </span><span class="n">ifc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">ndim</span><span class="w"></span>
+<span class="w">               </span><span class="n">id_face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">               </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!interface</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;int&#39;</span><span class="w"></span>
+<span class="w">               </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!outlet</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;O  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;O  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;O  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;O  &#39;</span><span class="w"></span>
+<span class="w">               </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!pin walls</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;W  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;f  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">               </span><span class="n">elseif</span><span class="w"> </span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="c">!outer walls</span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;W  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">                  </span><span class="n">cbc</span><span class="p">(</span><span class="n">ifc</span><span class="p">,</span><span class="n">iel</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t  &#39;</span><span class="w"></span>
+<span class="w">               </span><span class="k">endif</span>
+<span class="k">            enddo</span>
+<span class="k">         enddo</span>
+<span class="k">      endif</span><span class="w"></span>
+<span class="w">      </span>
+<span class="c">!     RANS initialization</span>
+<span class="w">      </span><span class="n">ifld_k</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"></span>
+<span class="w">      </span><span class="n">ifld_omega</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w"></span>
+<span class="w">      </span><span class="n">ifcoeffs</span><span class="o">=</span><span class="p">.</span><span class="n">false</span><span class="p">.</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">m_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w">       </span><span class="c">! non-regularized standard k-tau</span>
+<span class="w">      </span><span class="n">w_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="w">       </span><span class="c">! distf (coordinate difference, provides smoother function)</span>
 
-<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
-<span class="go">integer ifld_k,ifld_omega, m_id</span>
+<span class="w">      </span><span class="k">call </span><span class="n">rans_init</span><span class="p">(</span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="n">ifcoeffs</span><span class="p">,</span><span class="n">coeffs</span><span class="p">,</span><span class="n">w_id</span><span class="p">,</span><span class="n">wd</span><span class="p">,</span><span class="n">m_id</span><span class="p">)</span><span class="w"></span>
 
-<span class="go">integer w_id,imid,i</span>
-<span class="go">real coeffs(30) !array for passing your own coeffs</span>
-<span class="go">logical ifcoeffs</span>
-
-<span class="go">integer ifc,iel,id_face</span>
-
-<span class="go">if(idsess.eq.0)then              !BCs for inlet mesh</span>
-<span class="go">  do iel=1,nelt</span>
-<span class="go">  do ifc=1,2*ndim</span>
-<span class="go">     id_face = bc(5,ifc,iel,1)</span>
-<span class="go">     if (id_face.eq.2) then      !inlet</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;v  &#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;t  &#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;t  &#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;t  &#39;</span>
-<span class="go">     elseif (id_face.eq.3) then  !interface</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;int&#39;</span>
-<span class="go">     elseif (id_face.eq.4) then  !walls</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;W  &#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;I  &#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;t  &#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;t  &#39;</span>
-<span class="go">     endif</span>
-<span class="go">  enddo</span>
-<span class="go">  enddo</span>
-<span class="go">else                             !BCs for pin-wire bundle mesh</span>
-<span class="go">  do iel=1,nelt</span>
-<span class="go">  do ifc=1,2*ndim</span>
-<span class="go">     id_face = bc(5,ifc,iel,1)</span>
-<span class="go">     if (id_face.eq.3) then      !interface</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;int&#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;int&#39;</span>
-<span class="go">     elseif (id_face.eq.4) then  !outlet</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;O  &#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;O  &#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;O  &#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;O  &#39;</span>
-<span class="go">     elseif (id_face.eq.1) then  !pin walls</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;W  &#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;f  &#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;t  &#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;t  &#39;</span>
-<span class="go">     elseif (id_face.eq.2) then  !outer walls</span>
-<span class="go">         cbc(ifc,iel,1) = &#39;W  &#39;</span>
-<span class="go">         cbc(ifc,iel,2) = &#39;I  &#39;</span>
-<span class="go">         cbc(ifc,iel,3) = &#39;t  &#39;</span>
-<span class="go">         cbc(ifc,iel,4) = &#39;t  &#39;</span>
-<span class="go">     endif</span>
-<span class="go">  enddo</span>
-<span class="go">  enddo</span>
-<span class="go">endif</span>
-
-<span class="go">! RANS initialization</span>
-<span class="go">ifld_k     = 3</span>
-<span class="go">ifld_omega = 4</span>
-<span class="go">ifcoeffs=.false.</span>
-
-<span class="go">m_id = 4 ! non-regularized standard k-tau</span>
-<span class="go">w_id = 2 ! distf (coordinate difference, provides smoother function)</span>
-
-<span class="go">call rans_init(ifld_k,ifld_omega,ifcoeffs,coeffs,w_id,wd,m_id)</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">NekNek</span></code> solver launches two Nek5000 sessions simultaneously and field data transfer is performed between the
@@ -694,38 +693,38 @@ are required. For details on the RANS related parameters, refer <a class="refere
 </dl>
 <p>For RANS simulation, diffusion coefficients are assigned in the <code class="docutils literal notranslate"><span class="pre">uservp</span></code> routine. The routine used here remains
 nearly identical to the <a class="reference internal" href="rans.html#rans"><span class="std std-ref">RANS Channel</span></a> tutorial:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine uservp (ix,iy,iz,eg)</span>
-<span class="go">implicit none</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-<span class="go">include &#39;NEKUSE&#39;</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">uservp</span><span class="w"> </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">eg</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">rans_usr</span><span class="o">/</span><span class="w"> </span><span class="n">ifld_k</span><span class="p">,</span><span class="w"> </span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
 
-<span class="go">integer ix,iy,iz,e,eg</span>
-
-<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
-<span class="go">integer ifld_k,ifld_omega, m_id</span>
-
-<span class="go">real rans_mut,rans_mutsk,rans_mutso,rans_turbPrandtl</span>
-<span class="go">real mu_t,Pr_t</span>
-
-<span class="go">e = gllel(eg)</span>
-
-<span class="go">Pr_t=1.5 !rans_turbPrandtl()</span>
-<span class="go">mu_t=rans_mut(ix,iy,iz,e)</span>
-
-<span class="go">utrans = cpfld(ifield,2)</span>
-<span class="go">if(ifield.eq.1) then</span>
-<span class="go">        udiff = cpfld(ifield,1)+mu_t</span>
-<span class="go">elseif(ifield.eq.2) then</span>
-<span class="go">        udiff = cpfld(ifield,1)+mu_t*cpfld(ifield,2)/(Pr_t*cpfld(1,2))</span>
-<span class="go">elseif(ifield.eq.ifld_k) then</span>
-<span class="go">        udiff = cpfld(1,1)+rans_mutsk(ix,iy,iz,e)</span>
-<span class="go">elseif(ifield.eq.ifld_omega) then</span>
-<span class="go">        udiff = cpfld(1,1)+rans_mutso(ix,iy,iz,e)</span>
-<span class="go">endif</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<span class="w">      </span><span class="kt">real </span><span class="n">rans_mut</span><span class="p">,</span><span class="n">rans_mutsk</span><span class="p">,</span><span class="n">rans_mutso</span><span class="p">,</span><span class="n">rans_turbPrandtl</span><span class="w"></span>
+<span class="w">      </span><span class="kt">real </span><span class="n">mu_t</span><span class="p">,</span><span class="n">Pr_t</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">Pr_t</span><span class="o">=</span><span class="mf">1.5</span><span class="w">                  </span><span class="c">!rans_turbPrandtl()</span>
+<span class="w">      </span><span class="n">mu_t</span><span class="o">=</span><span class="n">rans_mut</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">utrans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpfld</span><span class="p">(</span><span class="n">ifield</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">udiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpfld</span><span class="p">(</span><span class="n">ifield</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">mu_t</span><span class="w"></span>
+<span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">udiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpfld</span><span class="p">(</span><span class="n">ifield</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">mu_t</span><span class="o">*</span><span class="n">cpfld</span><span class="p">(</span><span class="n">ifield</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">Pr_t</span><span class="o">*</span><span class="n">cpfld</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span><span class="w"></span>
+<span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_k</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">udiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpfld</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">rans_mutsk</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_omega</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">udiff</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cpfld</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">rans_mutso</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">endif</span>
+<span class="k">      </span>
+<span class="k">      return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Only turbulent Prandtl number is changed to <code class="docutils literal notranslate"><span class="pre">Pr_t=1.5</span></code> for this tutorial. This value is more appropriate for
@@ -733,64 +732,64 @@ molten sodium salts as compared to the default value of 0.85 (for air), which is
 function call.</p>
 <p>Source terms for the temperature and scalar equations are assigned through <code class="docutils literal notranslate"><span class="pre">userq</span></code>. The routine here is identical
 to the basic <a class="reference internal" href="rans.html#rans"><span class="std std-ref">RANS Channel</span></a> case:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine userq  (ix,iy,iz,ieg)</span>
-<span class="go">implicit none</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-<span class="go">include &#39;NEKUSE&#39;</span>
-
-<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
-<span class="go">integer ifld_k,ifld_omega, m_id</span>
-
-<span class="go">real rans_kSrc,rans_omgSrc</span>
-<span class="go">real rans_kDiag,rans_omgDiag</span>
-
-<span class="go">integer ie,ix,iy,iz,ieg</span>
-<span class="go">ie = gllel(ieg)</span>
-
-<span class="go">if(ifield.eq.2) then</span>
-<span class="go">        qvol = 0.0</span>
-<span class="go">        avol = 0.0</span>
-<span class="go">elseif(ifield.eq.ifld_k) then</span>
-<span class="go">        qvol = rans_kSrc  (ix,iy,iz,ie)</span>
-<span class="go">        avol = rans_kDiag (ix,iy,iz,ie)</span>
-<span class="go">elseif(ifield.eq.ifld_omega) then</span>
-<span class="go">        qvol = rans_omgSrc (ix,iy,iz,ie)</span>
-<span class="go">        avol = rans_omgDiag(ix,iy,iz,ie)</span>
-<span class="go">endif</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">userq</span><span class="w">  </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ieg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">rans_usr</span><span class="o">/</span><span class="w"> </span><span class="n">ifld_k</span><span class="p">,</span><span class="w"> </span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">real </span><span class="n">rans_kSrc</span><span class="p">,</span><span class="n">rans_omgSrc</span><span class="w"></span>
+<span class="w">      </span><span class="kt">real </span><span class="n">rans_kDiag</span><span class="p">,</span><span class="n">rans_omgDiag</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ie</span><span class="p">,</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ieg</span><span class="w"></span>
+<span class="w">      </span><span class="n">ie</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">ieg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">qvol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">         </span><span class="n">avol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_k</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">qvol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rans_kSrc</span><span class="w">  </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">avol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rans_kDiag</span><span class="w"> </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="n">elseif</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_omega</span><span class="p">)</span><span class="w"> </span><span class="k">then</span>
+<span class="k">         </span><span class="n">qvol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rans_omgSrc</span><span class="w"> </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">avol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rans_omgDiag</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">ie</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">endif</span>
+<span class="k">      </span>
+<span class="k">      return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Note that either component does not have any volumetric source heat source and hence <code class="docutils literal notranslate"><span class="pre">qvol=0</span></code> for temperature
 field (<code class="docutils literal notranslate"><span class="pre">ifield.eq.2</span></code>).</p>
 <p>Initial conditions are specified in <code class="docutils literal notranslate"><span class="pre">useric</span></code>. Similar values are assigned to both components and, thus, the routine
 implementation is straightforward. Temperature is initalized to 1 for both components.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine useric (ix,iy,iz,eg)</span>
-<span class="go">implicit none</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-<span class="go">include &#39;NEKUSE&#39;</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">useric</span><span class="w"> </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">eg</span><span class="w"></span>
 
-<span class="go">integer ix,iy,iz,e,eg</span>
-
-<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
-<span class="go">integer ifld_k,ifld_omega, m_id</span>
-
-<span class="go">e = gllel(eg)</span>
-
-<span class="go">ux   = 0.0</span>
-<span class="go">uy   = 0.0</span>
-<span class="go">uz   = 1.0</span>
-<span class="go">temp = 1.0</span>
-
-<span class="go">if(ifield.eq.2) temp = 1.0</span>
-<span class="go">if(ifield.eq.ifld_k) temp = 0.01</span>
-<span class="go">if(ifield.eq.ifld_omega) temp = 0.2</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">rans_usr</span><span class="o">/</span><span class="w"> </span><span class="n">ifld_k</span><span class="p">,</span><span class="w"> </span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">ux</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uy</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uz</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_k</span><span class="p">)</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.01</span><span class="w"></span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_omega</span><span class="p">)</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.2</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Boundary conditions are assigned in <code class="docutils literal notranslate"><span class="pre">userbc</span></code>. For the inlet component, inlet conditions are assigned using data
@@ -799,68 +798,68 @@ generated from RANS simulation in a pipe with identical diameter as the inlet su
 radial wall distance. Two plugin subroutines are required, which perform spline interpolation of the data to the
 inlet mesh, viz., <code class="docutils literal notranslate"><span class="pre">getInletProf</span></code> and <code class="docutils literal notranslate"><span class="pre">init_prof</span></code>. These are provided for the user in the <code class="docutils literal notranslate"><span class="pre">inlet_bundle.usr</span></code>
 file and can be used without modification. The usage is shown below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">subroutine userbc (ix,iy,iz,iside,eg)</span>
-<span class="go">implicit none</span>
-<span class="go">include &#39;SIZE&#39;</span>
-<span class="go">include &#39;TOTAL&#39;</span>
-<span class="go">include &#39;NEKUSE&#39;</span>
-<span class="go">include &#39;NEKNEK&#39;</span>
+<div class="highlight-fortran notranslate"><div class="highlight"><pre><span></span><span class="w">      </span><span class="k">subroutine </span><span class="n">userbc</span><span class="w"> </span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">implicit none</span>
+<span class="k">      include</span><span class="w"> </span><span class="s1">&#39;SIZE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;TOTAL&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKUSE&#39;</span><span class="w"></span>
+<span class="w">      </span><span class="k">include</span><span class="w"> </span><span class="s1">&#39;NEKNEK&#39;</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">eg</span><span class="p">,</span><span class="n">e</span><span class="w"></span>
 
-<span class="go">integer ix,iy,iz,iside,eg,e</span>
+<span class="w">      </span><span class="kt">real </span><span class="n">wd</span><span class="w"></span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">walldist</span><span class="o">/</span><span class="w"> </span><span class="n">wd</span><span class="p">(</span><span class="n">lx1</span><span class="p">,</span><span class="n">ly1</span><span class="p">,</span><span class="n">lz1</span><span class="p">,</span><span class="n">lelv</span><span class="p">)</span><span class="w"></span>
 
-<span class="go">real wd</span>
-<span class="go">common /walldist/ wd(lx1,ly1,lz1,lelv)</span>
+<span class="w">      </span><span class="k">common</span><span class="w"> </span><span class="o">/</span><span class="n">rans_usr</span><span class="o">/</span><span class="w"> </span><span class="n">ifld_k</span><span class="p">,</span><span class="w"> </span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">ifld_k</span><span class="p">,</span><span class="n">ifld_omega</span><span class="p">,</span><span class="w"> </span><span class="n">m_id</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">real </span><span class="n">uin</span><span class="p">,</span><span class="n">kin</span><span class="p">,</span><span class="n">tauin</span><span class="p">,</span><span class="n">wdist</span><span class="w"></span>
+<span class="w">      </span><span class="kt">real </span><span class="n">din</span><span class="p">,</span><span class="n">zmid</span><span class="w"></span>
 
-<span class="go">common /rans_usr/ ifld_k, ifld_omega, m_id</span>
-<span class="go">integer ifld_k,ifld_omega, m_id</span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">id_face</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="kt">integer </span><span class="n">icalld</span><span class="w"></span>
+<span class="w">      </span><span class="k">save </span><span class="n">icalld</span><span class="w"></span>
+<span class="w">      </span><span class="k">data </span><span class="n">icalld</span><span class="w"> </span><span class="o">/</span><span class="mi">0</span><span class="o">/</span><span class="w"></span>
 
-<span class="go">real uin,kin,tauin,wdist</span>
-<span class="go">real din,zmid</span>
-
-<span class="go">integer id_face</span>
-
-<span class="go">integer icalld</span>
-<span class="go">save icalld</span>
-<span class="go">data icalld /0/</span>
-
-<span class="go">e = gllel(eg)</span>
-
-<span class="go">if(icalld.eq.0)then</span>
-<span class="go">  call getInletProf                      !Initialize spline routine</span>
-<span class="go">  icalld = 1</span>
-<span class="go">endif</span>
-
-<span class="go">ux = 0.0</span>
-<span class="go">uy = 0.0</span>
-
-<span class="go">id_face = bc(5,iside,e,1)</span>
-
-<span class="go">! Inlet condition</span>
-<span class="go">if(idsess.eq.0 .and. id_face.eq.2)then</span>
-<span class="go">  din = 1.875                            !Inlet diameter</span>
-<span class="go">  wdist = min(wd(ix,iy,iz,e),din/2.)     !Wall distance</span>
-<span class="go">  call init_prof(wdist,uin,kin,tauin)    !Spline interpolation from InletProf.dat</span>
-<span class="go">  uz = uin</span>
-<span class="go">  if(ifield.eq.2)temp = 1.0</span>
-<span class="go">  if(ifield.eq.ifld_k)temp = kin</span>
-<span class="go">  if(ifield.eq.ifld_omega)temp = tauin</span>
-<span class="go">endif</span>
-
-<span class="go">! Heat flux on walls</span>
-<span class="go">if(ifield.eq.2)then</span>
-<span class="go">  if(idsess.eq.0)then</span>
-<span class="go">    flux = 0.0</span>
-<span class="go">  else</span>
-<span class="go">    zmid = 12.5/2.0</span>
-<span class="go">    flux=0.0</span>
-<span class="go">      if(id_face.eq.1)then               !Pin walls</span>
-<span class="go">        flux = 0.5*(1.0+tanh(2.0*PI*(zm1(ix,iy,iz,e)-zmid)))</span>
-<span class="go">      endif</span>
-<span class="go">  endif</span>
-<span class="go">endif</span>
-
-<span class="go">return</span>
-<span class="go">end</span>
+<span class="w">      </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gllel</span><span class="p">(</span><span class="n">eg</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">icalld</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         call </span><span class="n">getInletProf</span><span class="w">      </span><span class="c">!Initialize spline routine</span>
+<span class="w">         </span><span class="n">icalld</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"></span>
+<span class="w">      </span><span class="k">endif</span>
+<span class="k">      </span>
+<span class="k">      </span><span class="n">ux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span>
+<span class="w">      </span><span class="n">id_face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span>
+<span class="c">!     Inlet condition</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">idsess</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         </span><span class="n">din</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.875</span><span class="w">            </span><span class="c">!Inlet diameter</span>
+<span class="w">         </span><span class="n">wdist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">min</span><span class="p">(</span><span class="n">wd</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">),</span><span class="n">din</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="w"> </span><span class="c">!Wall distance</span>
+<span class="w">         </span><span class="k">call </span><span class="n">init_prof</span><span class="p">(</span><span class="n">wdist</span><span class="p">,</span><span class="n">uin</span><span class="p">,</span><span class="n">kin</span><span class="p">,</span><span class="n">tauin</span><span class="p">)</span><span class="w"> </span><span class="c">!Spline interpolation from InletProf.dat</span>
+<span class="w">         </span><span class="n">uz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uin</span><span class="w"></span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="w"></span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_k</span><span class="p">)</span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kin</span><span class="w"></span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="n">ifld_omega</span><span class="p">)</span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tauin</span><span class="w"></span>
+<span class="w">      </span><span class="k">endif</span><span class="w"></span>
+<span class="w">      </span>
+<span class="c">!     Heat flux on walls</span>
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">ifield</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         if</span><span class="p">(</span><span class="n">idsess</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
+<span class="k">            </span><span class="n">flux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">         </span><span class="k">else</span>
+<span class="k">            </span><span class="n">zmid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="mf">2.5</span><span class="o">/</span><span class="mf">2.0</span><span class="w"></span>
+<span class="w">            </span><span class="n">flux</span><span class="o">=</span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="p">(</span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">1</span><span class="p">)</span><span class="k">then</span><span class="w"> </span><span class="c">!Pin walls</span>
+<span class="w">               </span><span class="n">flux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="nb">tanh</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">PI</span><span class="o">*</span><span class="p">(</span><span class="n">zm1</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">)</span><span class="o">-</span><span class="n">zmid</span><span class="p">)))</span><span class="w"></span>
+<span class="w">            </span><span class="k">endif</span>
+<span class="k">         endif</span>
+<span class="k">      endif</span>
+<span class="k">      </span>
+<span class="k">      return</span>
+<span class="k">      end</span><span class="w"></span>
 </pre></div>
 </div>
 <p>Note that the diameter of the inlet surface is <code class="docutils literal notranslate"><span class="pre">din=1.875</span></code>. Spline interpolation routine, <code class="docutils literal notranslate"><span class="pre">init_prof</span></code>, requires
@@ -939,11 +938,11 @@ during initial transients.</p></li>
 before using <code class="docutils literal notranslate"><span class="pre">NEKNEK</span></code> solver for coupled simulation. Replace the <code class="docutils literal notranslate"><span class="pre">int</span></code> boundary condition with <code class="docutils literal notranslate"><span class="pre">O</span></code> (outlet)
 for the inlet component. The standalone case setup, if opted for, is left to the user as an exercise.</p></li>
 <li><p>Use OIFS solver to run the simulation at larger time steps (CFL&gt;1). This requires the following entries in the <code class="docutils literal notranslate"><span class="pre">.par</span></code>
-file:</p></li>
+file (uncomment to use):</p></li>
 </ul>
 </div></blockquote>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">targetCFL=4.0</span>
-<span class="go">extrapolation = OIFS</span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="c1">#targetCFL = 4.0</span><span class="w"></span>
+<span class="c1">#extrapolation = OIFS</span><span class="w"></span>
 </pre></div>
 </div>
 <p>It is necessary to specify target CFL for the OIFS solver. It calculates the number of extrapolation iterations
