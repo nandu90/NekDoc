@@ -267,14 +267,14 @@ containing inlet mesh and run <code class="docutils literal notranslate"><span c
 <span class="go">title         =  Created by ICEMCFD - EXODUS II Interface</span>
 
 <span class="go">num_dim       =        3</span>
-<span class="go">num_nodes     =    36527</span>
-<span class="go">num_elem      =   167965</span>
+<span class="go">num_nodes     =    35901</span>
+<span class="go">num_elem      =   165590</span>
 <span class="go">num_elem_blk  =        1</span>
 <span class="go">num_side_sets =        3</span>
 
 <span class="go">element block id   =        1</span>
 <span class="go">element type       =    TETRA</span>
-<span class="go">num_elem_in_block  =   167965</span>
+<span class="go">num_elem_in_block  =   165590</span>
 <span class="go">num_nodes_per_elem =        4</span>
 
 <span class="go">TETRA4 is valid element in a 3D mesh.</span>
@@ -294,25 +294,25 @@ containing inlet mesh and run <code class="docutils literal notranslate"><span c
 <span class="go">Sideset  4 ...</span>
 
 <span class="go">Converting elements ...</span>
-<span class="go"> flag1</span>
-<span class="go"> flag2</span>
-<span class="go"> Converting elements in block            1</span>
-<span class="go"> nvert,                     4</span>
-<span class="go"> Converted elements in nek:               671860</span>
+<span class="go">flag1</span>
+<span class="go">flag2</span>
+<span class="go">Converting elements in block            1</span>
+<span class="go">nvert,                     4</span>
+<span class="go">Converted elements in nek:               662360</span>
 <span class="go">Done :: Converting elements</span>
-<span class="go"> Domain max xyz:   1.8650400000000000        1.6151700000000000        0.0000000000000000</span>
-<span class="go"> Domain min xyz:  -1.8650400000000000       -1.6151700000000002       -5.0000000000000000</span>
-<span class="go"> total element now is                671860</span>
-<span class="go"> fluid exo file            1  has elements       671860</span>
-<span class="go"> calling: gather_bc_info()</span>
-<span class="go"> done: gather_bc_info()</span>
-<span class="go"> ******************************************************</span>
-<span class="go"> Boundary info summary</span>
-<span class="go"> sideSet ID</span>
+<span class="go">Domain max xyz:   1.8650400000000000        1.6151700000000000       0.25000000000000000</span>
+<span class="go">Domain min xyz:  -1.8650400000000000       -1.6151700000000002       -4.7500000000000000</span>
+<span class="go">total element now is                662360</span>
+<span class="go">fluid exo file            1  has elements       662360</span>
+<span class="go">calling: gather_bc_info()</span>
+<span class="go">done: gather_bc_info()</span>
+<span class="go">******************************************************</span>
+<span class="go">Boundary info summary</span>
+<span class="go">sideSet ID</span>
 <span class="go">   2</span>
 <span class="go">   3</span>
 <span class="go">   4</span>
-<span class="go"> ******************************************************</span>
+<span class="go">******************************************************</span>
 <span class="go">Enter number of periodic boundary surface pairs:</span>
 <span class="go">0</span>
 </pre></div>
@@ -454,7 +454,7 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <span class="c1">#startFrom = inlet.fld</span><span class="w"></span>
 <span class="na">stopAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">numSteps</span><span class="w"></span>
 <span class="na">numSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"></span>
-<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-4</span><span class="w"></span>
+<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 <span class="na">writeInterval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
 <span class="na">timeStepper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BDF2</span><span class="w"></span>
 <span class="c1">#targetCFL = 4.0</span><span class="w"></span>
@@ -497,7 +497,7 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <span class="c1">#startFrom = bundle.fld</span><span class="w"></span>
 <span class="na">stopAt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">numSteps</span><span class="w"></span>
 <span class="na">numSteps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">10000</span><span class="w"></span>
-<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-4</span><span class="w"></span>
+<span class="na">dt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-6</span><span class="w"></span>
 <span class="na">writeInterval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1000</span><span class="w"></span>
 <span class="na">timeStepper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">BDF2</span><span class="w"></span>
 <span class="c1">#targetCFL = 4.0</span><span class="w"></span>
@@ -831,8 +831,20 @@ file and can be used without modification. The usage is shown below:</p>
 <span class="k">      </span>
 <span class="k">      </span><span class="n">ux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
 <span class="w">      </span><span class="n">uy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">uz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
+<span class="w">      </span><span class="n">flux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="w"></span>
 <span class="w">      </span>
 <span class="w">      </span><span class="n">id_face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bc</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">iside</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+
+<span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">imask</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">).</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="p">)</span><span class="k">then</span>
+<span class="k">         continue</span>
+<span class="k">      else</span>
+<span class="k">         </span><span class="n">ux</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">uy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="n">uz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+<span class="w">         </span><span class="k">if</span><span class="p">(</span><span class="n">nfld_neknek</span><span class="p">.</span><span class="n">gt</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">valint</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">iy</span><span class="p">,</span><span class="n">iz</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">ldim</span><span class="o">+</span><span class="n">ifield</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="k">endif</span><span class="w"></span>
 <span class="w">      </span>
 <span class="c">!     Inlet condition</span>
 <span class="w">      </span><span class="k">if</span><span class="p">(</span><span class="n">idsess</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="p">.</span><span class="nb">and</span><span class="p">.</span><span class="w"> </span><span class="n">id_face</span><span class="p">.</span><span class="n">eq</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span><span class="k">then</span>
@@ -869,6 +881,10 @@ inlet surface with its boundary ID, <code class="docutils literal notranslate"><
 <p>Temperature flux must also be assigned in <code class="docutils literal notranslate"><span class="pre">userbc</span></code> on the pin surface walls. As mentioned earlier, non-dimensional
 unit heat flux is assigned from half axial length of the bundle (<code class="docutils literal notranslate"><span class="pre">zmid</span></code>). A smoothed axial flux profile is imposed using
 <code class="docutils literal notranslate"><span class="pre">tanh</span></code> step function as shown. Flux on all remaining walls is zero.</p>
+<p>Field data transfer between <code class="docutils literal notranslate"><span class="pre">NekNek</span></code> sessions is performed using <code class="docutils literal notranslate"><span class="pre">valint</span></code> array and the grid point locations of
+of overlapping boundaries are identified using the <code class="docutils literal notranslate"><span class="pre">imask</span></code> array. Thus, Dirichlet boundary condition values stored in
+<code class="docutils literal notranslate"><span class="pre">valint</span></code>, which contains spectral interpolation field values from overlapping mesh, are imposed at the boundary of
+current mesh, where <code class="docutils literal notranslate"><span class="pre">imask</span> <span class="pre">=</span> <span class="pre">1</span></code>.</p>
 </section>
 <section id="size-file">
 <h2>SIZE file<a class="headerlink" href="#size-file" title="Permalink to this heading"></a></h2>
@@ -950,6 +966,34 @@ based on <code class="docutils literal notranslate"><span class="pre">targetCFL<
 </section>
 <section id="results">
 <h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
+<p>For reference, normalized velocity magnitude and turbulent kinetic energy (TKE) contour plots are shown below along lateral
+cross-sections of the inlet and wire-pin bundle components. Note that the overlap plane is located at <span class="math notranslate nohighlight">\(z=0\)</span> axial location,
+where the polar orientation of wire is <span class="math notranslate nohighlight">\(7.2^{\circ}\)</span>. Contour plots along axial sections at successive downstream locations
+are also shown, corresponding to wire polar orientiations of <span class="math notranslate nohighlight">\(\{7.2,90,180,360\}^{\circ}\)</span>.</p>
+<figure class="align-center" id="id3">
+<span id="fig-multi-rans-v"></span><img alt="../_images/umag_section.png" src="../_images/umag_section.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 22 </span><span class="caption-text">Normalized velocity magnitude along <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> cross-sections. Corresponding zoomed views near overlap region (<span class="math notranslate nohighlight">\(z=0\)</span>) shown.</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id4">
+<span id="fig-multi-rans-k"></span><img alt="../_images/k_section.png" src="../_images/k_section.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 23 </span><span class="caption-text">Normalized TKE along <span class="math notranslate nohighlight">\(x\)</span> and <span class="math notranslate nohighlight">\(y\)</span> cross-sections. Corresponding zoomed views near overlap region (<span class="math notranslate nohighlight">\(z=0\)</span>) shown.</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<span id="fig-multi-rans-vpolar"></span><img alt="../_images/umag_polar.png" src="../_images/umag_polar.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 24 </span><span class="caption-text">Normalized velocity magnitude in bundle component at successive downstream locations (corresponding polar orientation annotated).</span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id6">
+<span id="fig-multi-rans-kpolar"></span><img alt="../_images/k_polar.png" src="../_images/k_polar.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 25 </span><span class="caption-text">Normalized TKE in bundle component at successive downstream locations (corresponding polar orientation annotated).</span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
 </section>
 </section>
 
