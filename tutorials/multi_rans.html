@@ -227,14 +227,15 @@ which must be saved as an <code class="docutils literal notranslate"><span class
 for converting an <code class="docutils literal notranslate"><span class="pre">.exo</span></code> mesh file to <code class="docutils literal notranslate"><span class="pre">.re2</span></code> format. Ensure that the <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> tool is compiled, available
 in the  <code class="docutils literal notranslate"><span class="pre">Nek5000/tools</span></code> directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd ~/Nek5000/tools</span>
-<span class="go">./maketools all</span>
+<span class="go">./maketools exo2nek gencon</span>
 </pre></div>
 </div>
-<p>The above commands will compile all available Nek5000 tools including <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code>.</p>
+<p>The above command will compile <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> and <code class="docutils literal notranslate"><span class="pre">genmap</span></code> tool. The latter is required for <a class="reference internal" href="#multi-gencon"><span class="std std-ref">generating mesh connectivity</span></a>
+file at a later step.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Note</dt>
 <dd class="field-odd"><p>Ensure that <code class="docutils literal notranslate"><span class="pre">MAXNEL</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">maketools.inc</span></code> file is set to a high value. Default value is 150000.
-Set to a number greater than the number of elements in the mesh (1000000) before running the above commands.</p>
+Set to a number greater than the number of elements in the mesh (1000000) before running the above command.</p>
 </dd>
 </dl>
 <p>Currently, <code class="docutils literal notranslate"><span class="pre">exo2nek</span></code> supports the following mesh elements,</p>
@@ -419,11 +420,11 @@ are assigned by the <code class="docutils literal notranslate"><span class="pre"
 </div>
 </section>
 <section id="generating-connectivity-file-co2">
-<h3>Generating Connectivity file (.co2)<a class="headerlink" href="#generating-connectivity-file-co2" title="Permalink to this heading"></a></h3>
+<span id="multi-gencon"></span><h3>Generating Connectivity file (.co2)<a class="headerlink" href="#generating-connectivity-file-co2" title="Permalink to this heading"></a></h3>
 <p>After generating the mesh files for both components, it is necessary to generate the corresponding connectivity files
 using <code class="docutils literal notranslate"><span class="pre">gencon</span></code> tool. Note that using <code class="docutils literal notranslate"><span class="pre">gencon</span></code> tool instead of <code class="docutils literal notranslate"><span class="pre">genmap</span></code>, which generates  map (<code class="docutils literal notranslate"><span class="pre">.ma2</span></code>) file, is the
 recommended procedure for large meshes. See <a class="reference internal" href="../build.html#build-pplist"><span class="std std-ref">Preprocessor List</span></a> for details.</p>
-<p>Users must specify <code class="docutils literal notranslate"><span class="pre">PPLIST=PARRSB</span></code> in <code class="docutils literal notranslate"><span class="pre">makenek</span></code> file (location: Nek5000/bin/makenek) which instructs Nek5000
+<p>Users must include <code class="docutils literal notranslate"><span class="pre">PARRSB</span></code> in the <code class="docutils literal notranslate"><span class="pre">PPLIST</span></code> in <code class="docutils literal notranslate"><span class="pre">makenek</span></code> file (location: Nek5000/bin/makenek) which instructs Nek5000
 to partition the mesh during run-time and requires <code class="docutils literal notranslate"><span class="pre">.co2</span></code> file instead of <code class="docutils literal notranslate"><span class="pre">.ma2</span></code> for running the case.</p>
 <p>Run <code class="docutils literal notranslate"><span class="pre">gencon</span></code> from the parent folder for each mesh file. Users will be prompted to specify the mesh file name and tolerance.
 Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
@@ -465,7 +466,7 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <span class="na">stressFormulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
 <span class="k">[PRESSURE]</span><span class="w"></span>
-<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg</span><span class="w"></span>
+<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg_hypre</span><span class="w"></span>
 <span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-5</span><span class="w"></span>
 <span class="na">residualProj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
@@ -508,7 +509,7 @@ Use 0.01 for inlet and 0.2 (default) for bundle mesh:</p>
 <span class="na">stressFormulation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
 <span class="k">[PRESSURE]</span><span class="w"></span>
-<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg</span><span class="w"></span>
+<span class="na">preconditioner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">semg_amg_hypre</span><span class="w"></span>
 <span class="na">residualTol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0e-5</span><span class="w"></span>
 <span class="na">residualProj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">yes</span><span class="w"></span>
 
@@ -538,8 +539,13 @@ any given time, separate restart file names should be specified to the <code cla
 properties and time step size are identical for both <code class="docutils literal notranslate"><span class="pre">.par</span></code> files. Values are assigned in dimensionless form;
 density is set to unity, viscosity and diffusivity are set to <span class="math notranslate nohighlight">\(1/\nu^*\)</span> and conductivity to Peclet number
 (-ve sign indicates that solver is run in dimensionless form).</p>
-<p>Note that given the large size of meshes, the <code class="docutils literal notranslate"><span class="pre">preconditioner</span></code> must be set to <code class="docutils literal notranslate"><span class="pre">semg_amg</span></code>. This invokes the algebraic
-multigrid solver for pressure instead of the default <code class="docutils literal notranslate"><span class="pre">XXT</span></code> solver.</p>
+<p>Note that given the large size of meshes, the <code class="docutils literal notranslate"><span class="pre">preconditioner</span></code> must be set to <code class="docutils literal notranslate"><span class="pre">semg_amg_hypre</span></code>. This invokes the algebraic
+multigrid (AMG) solver for pressure instead of the default <code class="docutils literal notranslate"><span class="pre">XXT</span></code> solver. The AMG preconditioner requires third party <code class="docutils literal notranslate"><span class="pre">HYPRE</span></code>
+libraries which must be included in the preprocessor list option in <code class="docutils literal notranslate"><span class="pre">makenek</span></code> file (location: Nek5000/bin/makenek).
+Also including the <code class="docutils literal notranslate"><span class="pre">PARRSB</span></code> option, as mentioned earlier, the <code class="docutils literal notranslate"><span class="pre">PPLIST</span></code> therefore is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">PPLIST = &quot;HYPRE PARRSB&quot;</span>
+</pre></div>
+</div>
 <p>Further details on all parameters of <code class="docutils literal notranslate"><span class="pre">.par</span></code> file can be found <a class="reference internal" href="../problem_setup/case_files.html#case-files-par"><span class="std std-ref">here</span></a>.</p>
 </section>
 <section id="user-routines-usr-file">
@@ -911,37 +917,6 @@ the script is launched as follows:</p>
 </div>
 <p>The above runs <code class="docutils literal notranslate"><span class="pre">NEKNEK</span></code> job on 40 nodes (20 dedicated to each session) for 4 hours and 30 minutes. Remember to specify
 the project name before launching, assigned to <code class="docutils literal notranslate"><span class="pre">prj</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">neksaw</span></code> script file.</p>
-<p>On the first run, Nek5000 will generate files for setting up the AMG (algebraic multi-grid) solver with the suffix
-<code class="docutils literal notranslate"><span class="pre">amgdmp_p.dat</span></code>, <code class="docutils literal notranslate"><span class="pre">amgdmp_i.dat</span></code> and <code class="docutils literal notranslate"><span class="pre">amgdmp_j.dat</span></code> for each component. Run the <code class="docutils literal notranslate"><span class="pre">nekamg_setup</span></code> tool to
-create the ANG setup files. The prompts will appear as shown:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enter name prefix of input file(s):</span>
-<span class="go">inlet</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Choose a coarsening method. Available options are:</span>
-<span class="go">- 3: Ruege-Stuben,</span>
-<span class="go">- 6: Falgout (default),</span>
-<span class="go">- 8: PMIS,</span>
-<span class="go">- 10: HMIS,</span>
-<span class="go">Choice:</span>
-<span class="go">10</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Choose an interpolation method. Available options are:</span>
-<span class="go">- 0: classical modified interpolation,</span>
-<span class="go">- 6: extended + i interpolation (default),</span>
-<span class="go">Choice:</span>
-<span class="go">0</span>
-</pre></div>
-</div>
-<p>User may choose any of the coarsening solver and interpolation methods available which lead to successful convergence.
-For this tutorial we choose HMIS and classical interpolation for both components.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Enter smoother tolerance [0.5]:</span>
-<span class="go">0.9</span>
-</pre></div>
-</div>
-<p>Repeat the steps for the bundle component. Upon completion three files will be written containing AMG matrices.</p>
-<p>On the next run, Nek5000 will advance normally and the user may proceed with the simulation.</p>
 </section>
 <section id="helpful-tips">
 <h2>Helpful Tips<a class="headerlink" href="#helpful-tips" title="Permalink to this heading"></a></h2>
